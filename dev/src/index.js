@@ -37,7 +37,8 @@ function init() {
             /* COMPONENTs */
 
             /* PAGES */
-            'home': require('./views/sections/home/home')
+            'home': require('./views/sections/home/home'),
+            'travel': require('./views/sections/travel/travel')
 
             /* COMMON */
 
@@ -48,9 +49,12 @@ function init() {
         },
 
         ready: function() {
+            TweenMax.defaultEase = Expo.easeOut;
+
             router.on('router:update', this.onRouteUpdate.bind(this));
 
             router.addRoute(require('./views/sections/home/home').route);
+            router.addRoute(require('./views/sections/travel/travel').route);
             router.setDefaultRoute('home');
         },
 

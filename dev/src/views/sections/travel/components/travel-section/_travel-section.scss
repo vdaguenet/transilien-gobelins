@@ -1,0 +1,8 @@
+.travel-section {
+    position: relative;
+    @extend %full-size;
+
+    .background {
+        @extend %full-size;
+    }
+}
