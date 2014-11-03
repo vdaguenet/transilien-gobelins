@@ -9,7 +9,7 @@
         <!-- <meta property="og:url" content="http://nice-url.com/"/> -->
         <!-- <meta property="og:site_name" content="nice title"/> -->
         <!-- <meta name="description" content="nice description"/> -->
-        <title>Patchwork</title>
+        <title>SNCF Votre trajet</title>
         <link rel="favicon" href="/favicon.ico">
         <link rel="stylesheet" href="build/styles.css" />
         <base href="/"/>
@@ -17,7 +17,14 @@
     </head>
 
     <body>
+        <!-- HEADER -->
+        <header v-component="header"></header>
+
+        <!-- CONTENT -->
         <div v-pw-view="currentPage"></div>
+
+        <!-- FOOTER -->
+        <footer v-component="footer"></footer>
 
         <script src="build/build.js"></script>
 
