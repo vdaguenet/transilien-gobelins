@@ -19,15 +19,13 @@ module.exports = extend(true, {}, section, {
     data: {
         sections: [
             {
-                bg: 'assets/images/travel-section-1.jpg'
+                bg: 'assets/images/conceptborad-02.jpg'
             },
             {
-                bg: 'assets/images/travel-section-2.jpg'
-            },
-            {
-                bg: 'assets/images/travel-section-3.jpg'
+                bg: 'assets/images/conceptborad-01.jpg'
             }
         ],
+        menuOpen: false,
         scrollInit: false,
         userHasScrolled: false
     },
@@ -51,6 +49,9 @@ module.exports = extend(true, {}, section, {
             var trainHalfW = Math.floor(train.offsetWidth / 2);
             TweenMax.set(train, {x: resizeUtil.halfWidth - trainHalfW});
         },
+        toggleMenu: function () {
+            this.menuOpen = !this.menuOpen;
+        },
         scroll: function () {
             if(false === this.scrollInit) return;
 
@@ -61,13 +62,14 @@ module.exports = extend(true, {}, section, {
             var trainHalfW = Math.floor(train.offsetWidth / 2);
             TweenMax.set(train, {x: resizeUtil.halfWidth - trainHalfW});
 
+            this.$findOne('.arrow').addEventListener('click', this.toggleMenu);
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
         }
     },
 
     ready: function() {
-        bindAll(this, 'resize', 'scroll', 'init');
+        bindAll(this, 'resize', 'scroll', 'init', 'toggleMenu');
         Vue.nextTick(this.init);
     },
 

@@ -1,15 +1,83 @@
+$arrow-width: 30px;
+
 .travel {
     @extend %full-size;
 
-    .train {
-        background: url(../assets/images/train.png);
-        background-size: contain;
-        background-repeat: no-repeat;
+    .footer {
+        width: 100%;
         position: fixed;
         bottom: 0;
-        margin: 0;
-        padding: 0;
-        height: 288px;
-        width: 75px;
+
+        .train {
+            background: url(../assets/images/train.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 288px;
+            width: 75px;
+        }
+        .menu {
+            position: absolute;
+            bottom: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100px;
+            background: $white;
+            @include transition ( height .3s ease );
+
+            &.closed  {
+                height: 10px;
+
+                .content,
+                .cross {
+                    opacity: 0;
+                }
+            }
+
+            .arrow {
+                position: relative;
+                top: -$arrow-width;
+                width: 0;
+                height: 0;
+                left: calc(50% - #{$arrow-width});
+                border-left: $arrow-width solid transparent;
+                border-right: $arrow-width solid transparent;
+                border-bottom: $arrow-width solid $white;
+                @include transition ( opacity .1s ease );
+
+                .cross {
+                    &:before,
+                    &:after {
+                        position: relative;
+                        top: 17px;
+                        right: 9px;
+                        content: "";
+                        display: block;
+                        width: 18px;
+                        height: 2px;
+                        background: $black;
+                    }
+
+                    &:before {
+                        margin-left: 0px;
+                        @include transform(rotate(45deg));
+                    }
+
+                    &:after {
+                        margin-top: -2px;
+                        @include transform(rotate(-45deg));
+                    }
+                }
+            }
+
+            .content {
+                position: relative;
+                top: -$arrow-width;
+                opacity: 1;
+                @include transition ( opacity .3s ease );
+            }
+
+        }
     }
 }
