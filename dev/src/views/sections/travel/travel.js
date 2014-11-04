@@ -34,12 +34,12 @@ module.exports = extend(true, {}, section, {
     },
     methods: {
         insertTweens: function() {
-            this.tlTransition.to(window, 0.6, {scrollTo: {y: this.$el.scrollHeight,x: 0}});
+            // this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0, y: 50}, {alpha: 1, y: 0, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.to(window, 0.7, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut});
+            // this.tlTransition.to(this.$el, 0.1, {alpha: 1});
+
         },
         beforeTransitionIn: function() {},
-        onTransitionInComplete: function() {
-            this.scrollInit = true;
-        },
         resize: function() {
             if(true === this.scrollInit && false === this.userHasScrolled) {
                 TweenMax.set(window, {scrollTo: {y: this.$el.scrollHeight,x: 0}});
@@ -69,6 +69,9 @@ module.exports = extend(true, {}, section, {
     },
 
     ready: function() {
+        this.$once('section:transitionInComplete', function() {
+            this.scrollInit = true;
+        });
         bindAll(this, 'resize', 'scroll', 'init', 'toggleMenu');
         Vue.nextTick(this.init);
     },

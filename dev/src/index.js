@@ -40,6 +40,7 @@ function init() {
 
             /* PAGES */
             'home': require('./views/sections/home/home'),
+            'itinerary': require('./views/sections/itinerary/itinerary'),
             'travel': require('./views/sections/travel/travel')
 
             /* COMMON */
@@ -56,6 +57,7 @@ function init() {
             router.on('router:update', this.onRouteUpdate.bind(this));
 
             router.addRoute(require('./views/sections/home/home').route);
+            router.addRoute(require('./views/sections/itinerary/itinerary').route);
             router.addRoute(require('./views/sections/travel/travel').route);
             router.setDefaultRoute('home');
         },
