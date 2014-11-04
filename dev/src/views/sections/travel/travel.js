@@ -34,10 +34,8 @@ module.exports = extend(true, {}, section, {
     },
     methods: {
         insertTweens: function() {
-            // this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0, y: 50}, {alpha: 1, y: 0, ease: Expo.easeOut}, 0.4);
-            this.tlTransition.to(window, 0.7, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut});
-            // this.tlTransition.to(this.$el, 0.1, {alpha: 1});
-
+            this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
         },
         beforeTransitionIn: function() {},
         resize: function() {
