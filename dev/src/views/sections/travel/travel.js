@@ -17,50 +17,30 @@ module.exports = extend(true, {}, section, {
         path: '/travel'
     },
     data: {
-        sections: [
-            {
-                bg: 'assets/images/conceptborad-02.jpg'
-            },
-            {
-                bg: 'assets/images/conceptborad-01.jpg'
-            }
-        ],
-        menuOpen: false,
         scrollInit: false,
-        userHasScrolled: false
+        xp: 0
     },
-    components: {
-        'travel-section': require('./components/travel-section/travel-section')
-    },
+    components: {},
     methods: {
         insertTweens: function() {
-            this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut}, 0.4);
+            // this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut}, 0.4);
             this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
         },
         beforeTransitionIn: function() {},
         resize: function() {
-            if(true === this.scrollInit && false === this.userHasScrolled) {
-                TweenMax.set(window, {scrollTo: {y: this.$el.scrollHeight,x: 0}});
-            }
+            var backgrounds = this.$find('.background');
+            var universes = this.$find('.universe');
 
-            var train = this.$findOne('.train');
-            var trainHalfW = Math.floor(train.offsetWidth / 2);
-            TweenMax.set(train, {x: resizeUtil.halfWidth - trainHalfW});
-        },
-        toggleMenu: function () {
-            this.menuOpen = !this.menuOpen;
+            backgrounds.forEach(function(bg, i) {
+                TweenMax.set(universes[i], {height: bg.offsetHeight});
+            });
         },
         scroll: function () {
-            if(false === this.scrollInit) return;
 
-            this.userHasScrolled = true;
         },
         init: function() {
-            var train = this.$findOne('.train');
-            var trainHalfW = Math.floor(train.offsetWidth / 2);
-            TweenMax.set(train, {x: resizeUtil.halfWidth - trainHalfW});
+            this.resize();
 
-            this.$findOne('.arrow').addEventListener('click', this.toggleMenu);
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
         }
@@ -70,7 +50,7 @@ module.exports = extend(true, {}, section, {
         this.$once('section:transitionInComplete', function() {
             this.scrollInit = true;
         });
-        bindAll(this, 'resize', 'scroll', 'init', 'toggleMenu');
+        bindAll(this, 'resize', 'scroll', 'init');
         Vue.nextTick(this.init);
     },
 

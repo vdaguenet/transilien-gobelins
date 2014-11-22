@@ -1,7 +1,21 @@
 .home {
-    padding: 30px;
-    h2 {
-        text-transform: uppercase;
-        font-size: 70px;
+    @extend %full-size;
+    background: rgb(0, 136, 206);
+    overflow: hidden;
+
+    .background {
+        z-index: 1;
+
+        svg {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+    }
+
+    .content {
+        @extend %full-size;
+        position: relative;
+        z-index: 2;
     }
 }
