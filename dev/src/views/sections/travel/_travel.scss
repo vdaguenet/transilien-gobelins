@@ -23,6 +23,22 @@ $arrow-width: 30px;
             .foreground {
                 z-index: 3;
             }
+
+            .cloud {
+                position: absolute;
+                z-index: 2;
+                width: 43%;
+
+                &.right {
+                    left: 50%;
+                    top: 5%;
+                }
+
+                &.left {
+                    left: -1%;
+                    top: 35%;
+                }
+            }
         }
     }
 }
