@@ -2,6 +2,8 @@ $arrow-width: 30px;
 
 .travel {
     .universes {
+        overflow: hidden;
+
         .universe {
             position: relative;
             width: 100%;
@@ -43,6 +45,36 @@ $arrow-width: 30px;
                     &.left {
                         left: -1%;
                         top: 35%;
+                    }
+                }
+            }
+        }
+
+        .transition {
+            // overflow-x: hidden;
+            position: absolute;
+            width: 100%;
+            z-index: 5;
+
+            &.crtp-lyo1 {
+                left: -1%;
+
+                svg {
+                    width: 101%;
+                }
+            }
+
+            &.lyo1-gnor {
+                .cloud {
+                    position: absolute;
+                    @include transform( translateY(-50%) );
+
+                    &.left {
+                        left: -30%;
+                    }
+
+                    &.right {
+                        right: -20%;
                     }
                 }
             }

@@ -28,20 +28,31 @@ module.exports = extend(true, {}, section, {
     components: {},
     methods: {
         insertTweens: function() {
-            this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.offsetHeight, x: 0}, ease: Expo.easeOut}, 0.4);
-            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut});
+            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
         },
         beforeTransitionIn: function() {},
         resize: function() {
             var backgrounds = this.$find('.background');
             var universes = this.$find('.universe');
+            var rock = this.$findOne('.transition.crtp-lyo1');
+            var clouds = this.$findOne('.transition.lyo1-gnor');
 
-            backgrounds.forEach(function(bg, i) {
+            forEach(backgrounds, function(bg, i) {
                 TweenMax.set(universes[i], {height: bg.offsetHeight});
             });
+
+            TweenMax.set(rock, {y: (-backgrounds[0].offsetHeight-((11/24)*rock.offsetHeight))});
+            TweenMax.set(clouds, {y: (-2*backgrounds[0].offsetHeight-(0.5*clouds.offsetHeight))});
         },
         scroll: function () {
             if (false === this.scrollInit) return;
+
+            // Prevent scrollX
+            // Even if horizontal scrollbar is not visible, people using trackbad can scroll on X
+            // I know it's bad but overflow-x: hidden kills my images
+            if (scrollUtil.x > 0) {
+                TweenMax.set(window, {scrollTo: {x: 0}});
+            }
 
             this.crossedPercent = 100 - ( (scrollUtil.y + resizeUtil.height) / this.$findOne('.universes').offsetHeight)*100;
             this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
@@ -53,12 +64,15 @@ module.exports = extend(true, {}, section, {
 
                 var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
 
-                TweenMax.set(middlegroundEls, {y: -0.8*crossedPercentInUniverse});
-                TweenMax.set(foregroundEls, {y: 0.9*crossedPercentInUniverse});
+                TweenMax.set(middlegroundEls, {y: -crossedPercentInUniverse});
+                TweenMax.set(foregroundEls, {y: 1.1*crossedPercentInUniverse});
             }
         },
         init: function() {
+            this.scrollInit = true;
             this.resize();
+
+            TweenMax.fromTo(window, 2.75, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}, ease: Expo.easeOut});
 
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
@@ -67,10 +81,9 @@ module.exports = extend(true, {}, section, {
 
     ready: function() {
         this.$once('section:transitionInComplete', function() {
-            this.scrollInit = true;
+            this.init();
         });
         bindAll(this, 'resize', 'scroll', 'init');
-        Vue.nextTick(this.init);
     },
 
     beforeDestroy: function() {
