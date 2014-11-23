@@ -18,13 +18,18 @@ module.exports = extend(true, {}, section, {
     },
     data: {
         scrollInit: false,
-        xp: 0
+        crossedPercent: 0,
+        universes: {
+            count: 3,
+            current: 0,
+            order: ['crtp', 'lyo1', 'gnor']
+        },
     },
     components: {},
     methods: {
         insertTweens: function() {
-            // this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.scrollHeight,x: 0}, ease: Expo.easeOut}, 0.4);
-            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.fromTo(window, 0.7, {scrollTo: {y: 0,x: 0}}, {scrollTo: {y: this.$el.offsetHeight, x: 0}, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut});
         },
         beforeTransitionIn: function() {},
         resize: function() {
@@ -36,7 +41,21 @@ module.exports = extend(true, {}, section, {
             });
         },
         scroll: function () {
+            if (false === this.scrollInit) return;
 
+            this.crossedPercent = 100 - ( (scrollUtil.y + resizeUtil.height) / this.$findOne('.universes').offsetHeight)*100;
+            this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
+
+            if (this.universes.order[ this.universes.current ]) {
+                var currentClass = '.' + this.universes.order[ this.universes.current ];
+                var foregroundEls = this.$find(currentClass + ' .foreground');
+                var middlegroundEls = this.$find(currentClass + ' .middleground');
+
+                var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
+
+                TweenMax.set(middlegroundEls, {y: -0.8*crossedPercentInUniverse});
+                TweenMax.set(foregroundEls, {y: 0.9*crossedPercentInUniverse});
+            }
         },
         init: function() {
             this.resize();
