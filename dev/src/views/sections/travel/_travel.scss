@@ -43,11 +43,28 @@ $arrow-width: 30px;
                     }
 
                     &.left {
-                        left: -1%;
+                        left: -4%;
                         top: 35%;
                     }
                 }
             }
+        }
+
+        .railway {
+            position: absolute;
+            width: 100%;
+            z-index: 4;
+            top: 0;
+            left: 0;
+        }
+
+        .train {
+            position: fixed;
+            z-index: 4;
+            left: 14.5%;
+            bottom: 0;
+            transform-origin: center center;
+            @include transform( rotate( -5deg ) );
         }
 
         .transition {
@@ -77,6 +94,47 @@ $arrow-width: 30px;
                         right: -20%;
                     }
                 }
+            }
+        }
+    }
+
+    .text {
+        position: absolute;
+        top: 0;
+
+        &.white {
+            color: rgb(225, 225, 225);
+        }
+        &.grey {
+            color: rgb(153, 153, 153);
+        }
+
+        .line {
+            line-height: 0.85;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+
+            &.big {
+                font-size: 50px;
+                font-weight: bold;
+            }
+            &.medium {
+                font-size: 30px;
+                font-weight: lighter;
+            }
+            &.small {
+                font-size: 17px;
+                font-weight: lighter;
+            }
+            &.no-transform {
+                text-transform: none;
+            }
+            &.offset-left {
+                display: inline-block;
+            }
+            &.offset-right {
+                display: inline-block;
             }
         }
     }

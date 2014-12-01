@@ -1,0 +1,27 @@
+<div class="travel-text" v-class="color" v-style="top: pos.y, left: pos.x">
+
+    <div v-if="offset" class="line offset-left" v-class="no-transform: first.noTransform, first.style">
+        {{{ first.content }}}
+    </div>
+    <div v-if="offset" class="line offset-right">
+        <div class="line" v-class="no-transform: second.noTransform, second.style">
+            {{{ second.content }}}
+        </div>
+        <div class="line" v-class="no-transform: third.noTransform, third.style">
+            {{{ third.content }}}
+        </div>
+    </div>
+
+    <div v-if="first && !offset" class="line top" v-class="no-transform: first.noTransform, first.style">
+        {{{ first.content }}}
+    </div>
+    <div v-if="second && !offset" class="line middle" v-class="no-transform: second.noTransform, second.style">
+        {{{ second.content }}}
+    </div>
+    <div v-if="third && !offset" class="line bottom" v-class="no-transform: third.noTransform, third.style">
+        {{{ third.content }}}
+    </div>
+    <div v-if="fourth && !offset" class="line bottom" v-class="no-transform: fourth.noTransform, fourth.style">
+        {{{ fourth.content }}}
+    </div>
+</div>

@@ -33,10 +33,11 @@ function init() {
 
         components: {
             /* LAYOUT */
-
-            /* COMPONENTs */
             'header': require('./views/layout/header/header'),
             'footer': require('./views/layout/footer/footer'),
+
+            /* COMPONENTs */
+
 
             /* PAGES */
             'home': require('./views/sections/home/home'),

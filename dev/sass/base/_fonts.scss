@@ -1,6 +1,6 @@
 $fonts-folder: '../assets/fonts';
-@include font-face('FontName', #{$fonts-folder}/'FontName/fontname');
+@include font-face('GillSans', #{$fonts-folder}/'GillSans/GillSans');
 
-%font-name {
-    font-family: 'FontName';
+@mixin gill-sans {
+    font-family: 'GillSans';
 }

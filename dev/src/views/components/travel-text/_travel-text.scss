@@ -1,0 +1,40 @@
+.travel-text {
+    position: absolute;
+    top: 0;
+
+    &.white {
+        color: rgb(225, 225, 225);
+    }
+    &.grey {
+        color: rgb(153, 153, 153);
+    }
+
+    .line {
+        line-height: 0.85;
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
+
+        &.big {
+            font-size: 50px;
+            font-weight: bold;
+        }
+        &.medium {
+            font-size: 30px;
+            font-weight: lighter;
+        }
+        &.small {
+            font-size: 17px;
+            font-weight: lighter;
+        }
+        &.no-transform {
+            text-transform: none;
+        }
+        &.offset-left {
+            display: inline-block;
+        }
+        &.offset-right {
+            display: inline-block;
+        }
+    }
+}
