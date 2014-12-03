@@ -59,12 +59,7 @@ $arrow-width: 30px;
         }
 
         .train {
-            position: fixed;
-            z-index: 4;
-            left: 14.5%;
-            bottom: 0;
-            transform-origin: center center;
-            @include transform( rotate( -5deg ) );
+            @include transform( translateY(-50%) );
         }
 
         .transition {
@@ -87,11 +82,15 @@ $arrow-width: 30px;
                     @include transform( translateY(-50%) );
 
                     &.left {
-                        left: -30%;
+                        width: 1300px;
+                        height: 407px;
+                        left: -17%;
                     }
 
                     &.right {
-                        right: -20%;
+                        width: 978px;
+                        height: 443px;
+                        right: -17%;
                     }
                 }
             }

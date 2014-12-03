@@ -10,20 +10,22 @@
     }
 
     .line {
-        line-height: 0.85;
         margin: 0;
         padding: 0;
         text-transform: uppercase;
 
         &.big {
+            line-height: 0.95;
             font-size: 50px;
             font-weight: bold;
         }
         &.medium {
+            line-height: 1;
             font-size: 30px;
             font-weight: lighter;
         }
         &.small {
+            line-height: 1.1;
             font-size: 17px;
             font-weight: lighter;
         }

@@ -7,7 +7,6 @@ var Vue = require('vue'),
     forEach = require('forEach'),
     resizeUtil = require('common/utils/resize-util'),
     scrollUtil = require('common/utils/scroll-util'),
-    _ = require('common/utils/_'),
     bindAll = require('bindall-standalone'),
     travelTexts = require('../../../../assets/data/travelTexts.js');
 
@@ -32,7 +31,7 @@ module.exports = extend(true, {}, section, {
             cloudRight: undefined
         },
         railway: undefined,
-        train: undefined,
+        scrollEnd: null,
         texts: []
     },
     components: {
@@ -52,23 +51,27 @@ module.exports = extend(true, {}, section, {
             this.transitions.rock = this.$findOne('.transition.crtp-lyo1');
             this.transitions.cloudLeft = this.$findOne('.transition.lyo1-gnor .cloud.left');
             this.transitions.cloudRight = this.$findOne('.transition.lyo1-gnor .cloud.right');
-            this.railway = this.$findOne('.railway');
-            this.train = this.$findOne('.train');
-            var sum = 0;
+            this.railway = this.$findOne('.railway svg');
+
             // Set universes sizes
+            var sum = 0;
             forEach(backgrounds, function(bg, i) {
                 TweenMax.set(universes[i], {height: bg.offsetHeight});
                 sum += bg.offsetHeight;
             });
+
             // Set train & railway
-            TweenMax.set(this.railway, {height: sum});
-            TweenMax.set(this.train, {height: 0.135*(sum/3)});
+            TweenMax.set(this.railway, {height: sum, width: this.$findOne('.universes').offsetWidth});
+            this.railway.pauseAnimations();
+
             // Set transitions
             TweenMax.set(this.transitions.rock, {y: (-(sum/3)-((11/24)*this.transitions.rock.offsetHeight))});
             TweenMax.set(this.transitions.cloudLeft, {y: (-2*(sum/3)-(0.5*this.transitions.cloudLeft.offsetHeight))});
             TweenMax.set(this.transitions.cloudRight, {y: (-2*(sum/3)-(0.5*this.transitions.cloudRight.offsetHeight))});
+
             // Set texts
             this.setTextsPositions();
+
         },
         setTextsPositions: function () {
             this.texts = [];
@@ -82,7 +85,6 @@ module.exports = extend(true, {}, section, {
                 };
                 this.texts.push(text);
             }.bind(this));
-            console.log(travelTexts[0].pos);
         },
         scroll: function () {
             if (false === this.scrollInit) return;
@@ -97,31 +99,41 @@ module.exports = extend(true, {}, section, {
             this.crossedPercent = 100 - ( (scrollUtil.y + resizeUtil.height) / this.$findOne('.universes').offsetHeight)*100;
             this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
 
-            // Move train
-            TweenMax.to(this.train, 0.2, {y: -this.crossedPercent, ease: Cubic.easeOut});
 
             if (this.universes.order[ this.universes.current ]) {
+                if (this.scrollEnd) {
+                    clearTimeout(this.scrollEnd);
+                }
+                this.railway.unpauseAnimations();
+                this.scrollEnd = setTimeout(function () {
+                    this.railway.pauseAnimations();
+                }.bind(this), 400);
+
                 var currentClass = '.' + this.universes.order[ this.universes.current ];
+                var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
+
                 var foregroundEls = this.$find(currentClass + ' .foreground');
                 var middlegroundEls = this.$find(currentClass + ' .middleground');
 
-                var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
+                var origin, handleOrigin, handleDest, dest;
+                var ratio = 1;
 
-                TweenMax.to(middlegroundEls, 0.2, {y: -crossedPercentInUniverse, ease: Cubic.easeOut});
-                TweenMax.to(foregroundEls, 0.2, {y: 1.1*crossedPercentInUniverse, ease: Cubic.easeOut});
+                TweenMax.to(middlegroundEls, 0.2, {y: -0.9*crossedPercentInUniverse, ease: Cubic.easeOut});
+                TweenMax.to(foregroundEls, 0.2, {y: 1.6*crossedPercentInUniverse, ease: Cubic.easeOut});
 
                 switch (this.universes.order[ this.universes.current ]) {
                     case 'crtp':
-                        if(crossedPercentInUniverse > 55) {
+                        // Let break that rock!
+                        if(crossedPercentInUniverse > 45) {
                             var groups = this.$find('.transition.crtp-lyo1 #transition g');
-                            TweenMax.staggerTo(groups, 2.0, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
+                            TweenMax.staggerTo(groups, 2.3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
                         }
 
                         break;
                     case 'lyo1':
                         // Move clouds appart
-                        TweenMax.to(this.transitions.cloudLeft, 0.2, {x: -crossedPercentInUniverse, ease: Cubic.easeOut});
-                        TweenMax.to(this.transitions.cloudRight, 0.2, {x: crossedPercentInUniverse, ease: Cubic.easeOut});
+                        TweenMax.to(this.transitions.cloudLeft, 0.4, {x: -1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
+                        TweenMax.to(this.transitions.cloudRight, 0.4, {x: 1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
 
                         break;
                 }
