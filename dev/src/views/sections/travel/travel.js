@@ -1,5 +1,7 @@
 'use strict';
 
+var API_URL = 'http://sncf-gobelins.dev/api';
+
 var Vue = require('vue'),
     TweenMax = require('TweenMax'),
     extend = require('extend'),
@@ -8,6 +10,7 @@ var Vue = require('vue'),
     resizeUtil = require('common/utils/resize-util'),
     scrollUtil = require('common/utils/scroll-util'),
     bindAll = require('bindall-standalone'),
+    request = require('superagent'),
     travelTexts = require('../../../../assets/data/travelTexts.js');
 
 module.exports = extend(true, {}, section, {
@@ -19,6 +22,7 @@ module.exports = extend(true, {}, section, {
     },
     data: {
         scrollInit: false,
+        dataInit: false,
         crossedPercent: 0,
         universes: {
             count: 3,
@@ -43,7 +47,23 @@ module.exports = extend(true, {}, section, {
             this.tlTransition.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0.4);
         },
         beforeTransitionIn: function() {
+            this.getData();
             this.resize();
+        },
+        getData: function () {
+            request.get(API_URL + '/general', function(res){
+                if(res.status < 400) {
+                    var data = JSON.parse(res.text);
+                    console.log(data);
+                    travelTexts[16].first.content = data.nbVoyagers/1000000;
+                    travelTexts[15].first.content = data.nbTrainsDay;
+                    travelTexts[14].first.content = data.nbStations;
+                    travelTexts[13].second.content = data.sncf.percentOfNetwork + '%';
+                    travelTexts[12].first.content = data.sncf.percentOfTraffic + '%';
+                    travelTexts[11].first.content = data.sncf.percentOfTravellers + '%';
+                }
+            }.bind(this));
+
         },
         resize: function() {
             var backgrounds = this.$find('.background');
