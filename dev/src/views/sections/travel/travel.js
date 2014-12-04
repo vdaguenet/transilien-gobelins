@@ -51,18 +51,55 @@ module.exports = extend(true, {}, section, {
             this.resize();
         },
         getData: function () {
+            // general informations
             request.get(API_URL + '/general', function(res){
-                if(res.status < 400) {
-                    var data = JSON.parse(res.text);
-                    console.log(data);
-                    travelTexts[16].first.content = data.nbVoyagers/1000000;
-                    travelTexts[15].first.content = data.nbTrainsDay;
-                    travelTexts[14].first.content = data.nbStations;
-                    travelTexts[13].second.content = data.sncf.percentOfNetwork + '%';
-                    travelTexts[12].first.content = data.sncf.percentOfTraffic + '%';
-                    travelTexts[11].first.content = data.sncf.percentOfTravellers + '%';
+                if(res.status >= 400) {
+                    return;
                 }
-            }.bind(this));
+
+                var data = JSON.parse(res.text);
+                travelTexts[16].first.content = data.nbVoyagers/1000000;
+                travelTexts[15].first.content = data.nbTrainsDay;
+                travelTexts[14].first.content = data.nbStations;
+                travelTexts[13].second.content = data.sncf.percentOfNetwork + '%';
+                travelTexts[12].first.content = data.sncf.percentOfTraffic + '%';
+                travelTexts[11].first.content = data.sncf.percentOfTravellers + '%';
+            });
+
+            // data about Gare de Lyon
+            request.get(API_URL + '/stations/info?ecs=lyo1', function(res) {
+                if (res.status >= 400) {
+                    return;
+                }
+                var data = JSON.parse(res.text);
+                travelTexts[8].second.content = 'c\'est ' + data.travellersDay;
+                travelTexts[7].second.content = 100*((data.travellersRushHours.morning + data.travellersRushHours.evening)/ data.travellersDay) + '%';
+            });
+
+            request.get(API_URL + '/validations/count?station=lyo1&hour=09:05', function(res) {
+                if (res.status >= 400) {
+                    return;
+                }
+
+                var data = JSON.parse(res.text);
+                var prevCount = 0;
+                travelTexts[6].first.content = prevCount = data.count;
+
+                request.get(API_URL + '/validations/count?station=lyo1&hour=08:50', function(res) {
+                    if (res.status >= 400) {
+                        return;
+                    }
+
+                    var data = JSON.parse(res.text);
+                    var end = (prevCount > data.count) ? ' fois moins' : ' fois plus';
+                    travelTexts[5].first.content = Math.floor(prevCount/data.count) + end;
+
+                    var seatsBusy = (1/prevCount/data.count)*1850;
+                    var seatsFree = 1850 - seatsBusy;
+                    travelTexts[3].second.content = 'c\'est ' +  Math.floor(seatsFree*100/1850) + '%';
+
+                });
+            });
 
         },
         resize: function() {
@@ -170,7 +207,7 @@ module.exports = extend(true, {}, section, {
         this.$once('section:transitionInComplete', function() {
             this.init();
         });
-        bindAll(this, 'resize', 'scroll', 'init');
+        bindAll(this, 'resize', 'scroll', 'init', 'getData');
     },
     beforeDestroy: function() {
         resizeUtil.removeListener(this.resize);

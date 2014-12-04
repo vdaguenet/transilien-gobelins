@@ -9,18 +9,13 @@ module.exports = [
             y: 3.8
         },
         color: 'grey',
-        offset: true,
         first: {
-            style: 'big',
-            content: '15%'
+            style: 'small',
+            content: 'Et peut-être faire'
         },
         second: {
             style: 'medium',
-            content: 'de chance de discuter'
-        },
-        third: {
-            style: 'small',
-            content: 'avec votre voisins'
+            content: 'une nouvelle rencontre'
         }
     },
     {
@@ -31,16 +26,20 @@ module.exports = [
         },
         color: 'grey',
         first: {
-            style: 'big',
-            content: '80%'
+            style: 'medium',
+            content: 'du'
         },
         second: {
-            style: 'small',
-            content: 'de chance de'
+            style: 'big',
+            content: 'temps'
         },
         third: {
-            style: 'small',
-            content: 'se faire plaisir'
+            style: 'medium',
+            content: 'pour vos'
+        },
+        fourth: {
+            style: 'big',
+            content: 'loisirs'
         }
     },
     {
@@ -51,14 +50,10 @@ module.exports = [
         },
         color: 'grey',
         first: {
-            style: 'big',
-            content: '20%'
+            style: 'medium',
+            content: 'du stress'
         },
         second: {
-            style: 'small',
-            content: 'de stress'
-        },
-        third: {
             style: 'medium',
             content: 'en moins'
         }
@@ -84,7 +79,7 @@ module.exports = [
         },
         fourth: {
             style: 'small',
-            content: 'de bien voyager'
+            content: 'de voyager assis'
         }
     },
     {
