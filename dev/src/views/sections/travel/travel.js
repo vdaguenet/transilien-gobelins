@@ -1,7 +1,5 @@
 'use strict';
 
-var API_URL = 'http://sncf-gobelins.dev/api';
-
 var Vue = require('vue'),
     TweenMax = require('TweenMax'),
     extend = require('extend'),
@@ -11,6 +9,7 @@ var Vue = require('vue'),
     scrollUtil = require('common/utils/scroll-util'),
     bindAll = require('bindall-standalone'),
     request = require('superagent'),
+    config = require('common/config'),
     travelTexts = require('../../../../assets/data/travelTexts.js');
 
 module.exports = extend(true, {}, section, {
@@ -47,12 +46,14 @@ module.exports = extend(true, {}, section, {
             this.tlTransition.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0.4);
         },
         beforeTransitionIn: function() {
-            this.getData();
+            if(!config.useFakeData) {
+                this.getData();
+            }
             this.resize();
         },
         getData: function () {
             // general informations
-            request.get(API_URL + '/general', function(res){
+            request.get(config.apiUrl + '/general', function(res){
                 if(res.status >= 400) {
                     return;
                 }
@@ -67,34 +68,42 @@ module.exports = extend(true, {}, section, {
             });
 
             // data about Gare de Lyon
-            request.get(API_URL + '/stations/info?ecs=lyo1', function(res) {
+            request.get(config.apiUrl + '/ecs/LYO1', function(res) {
                 if (res.status >= 400) {
                     return;
                 }
-                var data = JSON.parse(res.text);
-                travelTexts[8].second.content = 'c\'est ' + data.travellersDay;
-                travelTexts[7].second.content = 100*((data.travellersRushHours.morning + data.travellersRushHours.evening)/ data.travellersDay) + '%';
+
+                var travellersDay = JSON.parse(res.text);
+                travelTexts[8].second.content = 'c\'est ' + travellersDay;
+
+                request.get(config.apiUrl + '/ecs/LYO1', function(res) {
+                    if (res.status >= 400) {
+                        return;
+                    }
+                    var data = JSON.parse(res.text);
+                    travelTexts[7].second.content = (travellersDay > 0) ? 100*(data/ travellersDay) + '%' : 0 + '%';
+                });
             });
 
-            request.get(API_URL + '/validations/count?station=lyo1&hour=09:05', function(res) {
+            request.get(config.apiUrl + '/ecs-time/LYO1/0905', function(res) {
                 if (res.status >= 400) {
                     return;
                 }
 
                 var data = JSON.parse(res.text);
                 var prevCount = 0;
-                travelTexts[6].first.content = prevCount = data.count;
+                travelTexts[6].first.content = prevCount = data;
 
-                request.get(API_URL + '/validations/count?station=lyo1&hour=08:50', function(res) {
+                request.get(config.apiUrl + '/ecs-time/LYO1/0850', function(res) {
                     if (res.status >= 400) {
                         return;
                     }
 
-                    var data = JSON.parse(res.text);
-                    var end = (prevCount > data.count) ? ' fois moins' : ' fois plus';
-                    travelTexts[5].first.content = Math.floor(prevCount/data.count) + end;
+                    var data = (JSON.parse(res.text) > 0) ? JSON.parse(res.text) : 1;
+                    var end = (prevCount > data) ? ' fois moins' : ' fois plus';
+                    travelTexts[5].first.content = Math.floor(prevCount/data) + end;
 
-                    var seatsBusy = (1/prevCount/data.count)*1850;
+                    var seatsBusy = (1/prevCount/data)*1850;
                     var seatsFree = 1850 - seatsBusy;
                     travelTexts[3].second.content = 'c\'est ' +  Math.floor(seatsFree*100/1850) + '%';
 
@@ -108,7 +117,12 @@ module.exports = extend(true, {}, section, {
             this.transitions.rock = this.$findOne('.transition.crtp-lyo1');
             this.transitions.cloudLeft = this.$findOne('.transition.lyo1-gnor .cloud.left');
             this.transitions.cloudRight = this.$findOne('.transition.lyo1-gnor .cloud.right');
+            this.transitions.cloudEndLeft = this.$findOne('.transition.gnor-end .cloud.left');
+            this.transitions.cloudEndRight = this.$findOne('.transition.gnor-end .cloud.right');
             this.railway = this.$findOne('.railway svg');
+
+            // Set last screen
+            TweenMax.set(this.$findOne('.end'), {height: resizeUtil.height});
 
             // Set universes sizes
             var sum = 0;
@@ -118,13 +132,15 @@ module.exports = extend(true, {}, section, {
             });
 
             // Set train & railway
-            TweenMax.set(this.railway, {height: sum, width: this.$findOne('.universes').offsetWidth});
+            TweenMax.set(this.railway, {y: resizeUtil.height,height: sum, width: this.$findOne('.universes').offsetWidth});
             this.railway.pauseAnimations();
 
             // Set transitions
             TweenMax.set(this.transitions.rock, {y: (-(sum/3)-((11/24)*this.transitions.rock.offsetHeight))});
             TweenMax.set(this.transitions.cloudLeft, {y: (-2*(sum/3)-(0.5*this.transitions.cloudLeft.offsetHeight))});
             TweenMax.set(this.transitions.cloudRight, {y: (-2*(sum/3)-(0.5*this.transitions.cloudRight.offsetHeight))});
+            TweenMax.set(this.transitions.cloudEndLeft, {y: -(sum)-(0.5*this.transitions.cloudEndLeft.offsetHeight)});
+            TweenMax.set(this.transitions.cloudEndRight, {y: -(sum)-(0.5*this.transitions.cloudEndRight.offsetHeight)});
 
             // Set texts
             this.setTextsPositions();
@@ -138,7 +154,7 @@ module.exports = extend(true, {}, section, {
             forEach(travelTexts, function(text, i) {
                 text.pos = {
                     x: text.posPercent.x/100*width + 'px',
-                    y: text.posPercent.y/100*height + 'px'
+                    y: resizeUtil.height + text.posPercent.y/100*height + 'px'
                 };
                 this.texts.push(text);
             }.bind(this));
@@ -153,9 +169,8 @@ module.exports = extend(true, {}, section, {
                 TweenMax.set(window, {scrollTo: {x: 0}});
             }
 
-            this.crossedPercent = 100 - ( (scrollUtil.y + resizeUtil.height) / this.$findOne('.universes').offsetHeight)*100;
+            this.crossedPercent = 100 - ( scrollUtil.y / this.$findOne('.universes').offsetHeight )*100;
             this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
-
 
             if (this.universes.order[ this.universes.current ]) {
                 if (this.scrollEnd) {
@@ -191,6 +206,12 @@ module.exports = extend(true, {}, section, {
                         // Move clouds appart
                         TweenMax.to(this.transitions.cloudLeft, 0.4, {x: -1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
                         TweenMax.to(this.transitions.cloudRight, 0.4, {x: 1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
+
+                        break;
+                    case 'gnor':
+                        // Move clouds appart
+                        TweenMax.to(this.transitions.cloudEndLeft, 0.4, {x: -1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
+                        TweenMax.to(this.transitions.cloudEndRight, 0.4, {x: 1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
 
                         break;
                 }

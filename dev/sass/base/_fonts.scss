@@ -1,6 +1,11 @@
 $fonts-folder: '../assets/fonts';
 @include font-face('GillSans', #{$fonts-folder}/'GillSans/GillSans');
+@include font-face('GillSans Light', #{$fonts-folder}/'GillSans Light/GillSans-Light');
 
 @mixin gill-sans {
     font-family: 'GillSans';
+}
+
+@mixin gill-sans-light {
+    font-family: 'GillSans Light';
 }

@@ -16,20 +16,72 @@
 
         &.big {
             line-height: 0.95;
-            font-size: 50px;
+            font-size: 58px;
             font-weight: bold;
+
+            @include max-screen(1150px) {
+                font-size: 50px;
+            }
+            @include max-screen(1020px) {
+                font-size: 45px;
+            }
+            @include max-screen(850px) {
+                font-size: 40px;
+            }
+            @include max-screen(768px) {
+                font-size: 35px;
+            }
+            @include max-screen(680px) {
+                font-size: 32px;
+            }
+            @include max-screen(595px) {
+                font-size: 28px;
+            }
+            @include max-screen(530px) {
+                font-size: 24px;
+            }
+            @include max-screen(450px) {
+                font-size: 20px;
+            }
         }
         &.medium {
             line-height: 1;
-            font-size: 30px;
+            font-size: 35px;
             font-weight: lighter;
+
+            @include max-screen(1150px) {
+                font-size: 27px;
+            }
+            @include max-screen(1020px) {
+                font-size: 20px;
+            }
+            @include max-screen(850px) {
+                font-size: 18px;
+            }
+            @include max-screen(595px) {
+                font-size: 15px;
+            }
+            @include max-screen(530px) {
+                font-size: 14px;
+            }
+            @include max-screen(450px) {
+                font-size: 12px;
+            }
         }
         &.small {
             line-height: 1.1;
-            font-size: 17px;
-            font-weight: lighter;
+            font-size: 20px;
+            @include gill-sans-light();
+
+            @include max-screen(1150px) {
+                font-size: 15px;
+            }
+            @include max-screen(1020px) {
+                font-size: 12px;
+            }
         }
         &.no-transform {
+            @include gill-sans-light();
             text-transform: none;
         }
         &.offset-left {

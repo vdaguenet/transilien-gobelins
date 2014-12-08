@@ -21,7 +21,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 20,
+            x: 14,
             y: 10.5
         },
         color: 'grey',
@@ -45,7 +45,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 45,
+            x: 42,
             y: 14
         },
         color: 'grey',
@@ -61,7 +61,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 30,
+            x: 23,
             y: 21
         },
         color: 'grey',
@@ -105,8 +105,8 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 56,
-            y: 40
+            x: 51,
+            y: 38
         },
         color: 'white',
         first: {
@@ -121,8 +121,8 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 78.5,
-            y: 47.5
+            x: 72,
+            y: 45
         },
         color: 'white',
         first: {
@@ -170,7 +170,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 59,
+            x: 50,
             y: 59.3
         },
         color: 'white',
@@ -195,7 +195,7 @@ module.exports = [
         },
         color: 'white',
         first: {
-            style: 'medium',
+            style: 'small',
             content: 'un nombre'
         },
         second: {
@@ -207,7 +207,7 @@ module.exports = [
             content: 'croissant'
         },
         fourth: {
-            style: 'medium',
+            style: 'small',
             content: 'de voyageurs'
         }
     },
@@ -237,7 +237,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 3,
+            x: 1,
             y: 80
         },
         color: 'white',
@@ -277,7 +277,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 3,
+            x: 1,
             y: 86
         },
         color: 'white',
@@ -291,13 +291,13 @@ module.exports = [
         },
         third: {
             style: 'small',
-            content: 'du réseau SNCF'
+            content: 'du réseau<br>SNCF'
         }
     },
     {
         pos: {},
         posPercent: {
-            x: 22,
+            x: 20,
             y: 90.45
         },
         color: 'white',
@@ -313,7 +313,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 3,
+            x: 1.5,
             y: 94.4
         },
         color: 'white',
@@ -333,7 +333,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 22,
+            x: 20,
             y: 97.5
         },
         color: 'white',
