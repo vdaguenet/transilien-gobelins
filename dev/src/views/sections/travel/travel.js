@@ -76,12 +76,12 @@ module.exports = extend(true, {}, section, {
                 var travellersDay = JSON.parse(res.text);
                 travelTexts[8].second.content = 'c\'est ' + travellersDay;
 
-                request.get(config.apiUrl + '/ecs/LYO1', function(res) {
+                request.get(config.apiUrl + '/ecs-rushhour/LYO1', function(res) {
                     if (res.status >= 400) {
                         return;
                     }
                     var data = JSON.parse(res.text);
-                    travelTexts[7].second.content = (travellersDay > 0) ? 100*(data/ travellersDay) + '%' : 0 + '%';
+                    travelTexts[7].second.content = (travellersDay > 0) ? Math.floor(100*(data/ travellersDay)) + '%' : 0 + '%';
                 });
             });
 
