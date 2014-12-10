@@ -105,7 +105,7 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 51,
+            x: 48,
             y: 38
         },
         color: 'white',

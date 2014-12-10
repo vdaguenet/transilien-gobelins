@@ -21,6 +21,7 @@ module.exports = extend(true, {}, section, {
     },
     data: {
         scrollInit: false,
+        freeScroll: false,
         dataInit: false,
         crossedPercent: 0,
         universes: {
@@ -219,8 +220,32 @@ module.exports = extend(true, {}, section, {
         },
         init: function() {
             this.scrollInit = true;
+            // Back to top
+            TweenMax.to(window, 80, {
+                scrollTo: {
+                    y: 0,
+                    x: 0
+                },
+                ease: Linear.easeNone,
+                delay:  1,
+                onComplete: function () {
+                    this.freeScroll = true;
+                }.bind(this)
+            });
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
+
+            this.$el.addEventListener('mousewheel', function (e) {
+                if (false === this.freeScroll) {
+                    e.preventDefault();
+                }
+            }.bind(this));
+            this.$el.addEventListener('DOMMouseScroll', function (e) {
+                // firefox
+                if (false === this.freeScroll) {
+                    e.preventDefault();
+                }
+            }.bind(this));
         }
     },
 
