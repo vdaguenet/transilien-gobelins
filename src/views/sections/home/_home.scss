@@ -83,6 +83,9 @@
             padding: 15px 30px;
             margin: 40px 0 0 33%;
             cursor: pointer;
+            color: $light-blue;
+            font-weight: bold;
+            letter-spacing: 1px;
 
             @include max-screen(885px) {
                 margin-left: 5%;
@@ -91,11 +94,6 @@
                 margin: 15px auto;
             }
 
-            a {
-                color: $light-blue;
-                font-weight: bold;
-                letter-spacing: 1px;
-            }
         }
     }
 }

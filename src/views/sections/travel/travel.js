@@ -197,7 +197,7 @@ module.exports = extend(true, {}, section, {
                 switch (this.universes.order[ this.universes.current ]) {
                     case 'crtp':
                         // Let break that rock!
-                        if(crossedPercentInUniverse > 45) {
+                        if(crossedPercentInUniverse > 60) {
                             var groups = this.$find('.transition.crtp-lyo1 #transition g');
                             TweenMax.staggerTo(groups, 2.3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
                         }
@@ -218,8 +218,38 @@ module.exports = extend(true, {}, section, {
                 }
             }
         },
+        animateTexts: function () {
+            this.tlTexts = new TimelineMax();
+            this.tlTexts.set(this.$findOne('#text-16'), {alpha: 1}, 0);
+            this.tlTexts.staggerFromTo(this.$find('#text-16 .line'), 0.7, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0);
+            this.tlTexts.set(this.$findOne('#text-15'), {alpha: 1}, 0.4);
+            this.tlTexts.staggerFromTo(this.$find('#text-15 .line'), 0.7, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0.4);
+            this.tlTexts.set(this.$findOne('#text-14'), {alpha: 1}, 0.8);
+            this.tlTexts.staggerFromTo(this.$find('#text-14 .line'), 0.7, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0.8);
+            this.tlTexts.set(this.$findOne('#text-13'), {alpha: 1}, 4);
+            this.tlTexts.staggerFromTo(this.$find('#text-13 .line'), 0.7, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 4);
+            this.tlTexts.set(this.$findOne('#text-12'), {alpha: 1}, 6);
+            this.tlTexts.set(this.$findOne('#text-11'), {alpha: 1}, 9);
+            this.tlTexts.set(this.$findOne('#text-10'), {alpha: 1}, 12);
+            this.tlTexts.set(this.$findOne('#text-9'), {alpha: 1}, 27);
+            this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 29);
+            this.tlTexts.set(this.$findOne('#text-7'), {alpha: 1}, 32);
+            this.tlTexts.set(this.$findOne('#text-6'), {alpha: 1}, 37);
+            this.tlTexts.set(this.$findOne('#text-5'), {alpha: 1}, 44.2);
+            this.tlTexts.set(this.$findOne('#text-4'), {alpha: 1}, 52);
+            this.tlTexts.set(this.$findOne('#text-3'), {alpha: 1}, 58);
+            this.tlTexts.set(this.$findOne('#text-2'), {alpha: 1}, 63);
+            this.tlTexts.set(this.$findOne('#text-1'), {alpha: 1}, 64.5);
+            this.tlTexts.set(this.$findOne('#text-0'), {alpha: 1}, 71);
+        },
         init: function() {
+            resizeUtil.addListener(this.resize);
+            scrollUtil.addListener(this.scroll);
+
             this.scrollInit = true;
+
+            this.animateTexts();
+
             // Back to top
             TweenMax.to(window, 80, {
                 scrollTo: {
@@ -227,25 +257,24 @@ module.exports = extend(true, {}, section, {
                     x: 0
                 },
                 ease: Linear.easeNone,
-                delay:  1,
+                delay:  1.8,
                 onComplete: function () {
                     this.freeScroll = true;
                 }.bind(this)
             });
-            resizeUtil.addListener(this.resize);
-            scrollUtil.addListener(this.scroll);
 
-            this.$el.addEventListener('mousewheel', function (e) {
-                if (false === this.freeScroll) {
-                    e.preventDefault();
-                }
-            }.bind(this));
-            this.$el.addEventListener('DOMMouseScroll', function (e) {
-                // firefox
-                if (false === this.freeScroll) {
-                    e.preventDefault();
-                }
-            }.bind(this));
+
+            // this.$el.addEventListener('mousewheel', function (e) {
+            //     if (false === this.freeScroll) {
+            //         e.preventDefault();
+            //     }
+            // }.bind(this));
+            // this.$el.addEventListener('DOMMouseScroll', function (e) {
+            //     // firefox
+            //     if (false === this.freeScroll) {
+            //         e.preventDefault();
+            //     }
+            // }.bind(this));
         }
     },
 

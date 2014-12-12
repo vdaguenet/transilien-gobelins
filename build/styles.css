@@ -1,0 +1,691 @@
+/*
+    Bourbon imports
+
+    Bourbon mixins aren't not used but it is a dependency for Neat
+    Neat is a simple grid system
+    Grid-settings is the configuration file for Neat
+*/
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/*
+    Base styles
+    html, fonts, colors...
+ */
+@font-face {
+  font-family: 'GillSans';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../assets/fonts/GillSans/GillSans.eot');
+  src: url('../assets/fonts/GillSans/GillSans.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/GillSans/GillSans.woff') format('woff'), url('../assets/fonts/GillSans/GillSans.ttf') format('truetype'), url('../assets/fonts/GillSans/GillSans.svg#GillSans') format('svg'); }
+
+@font-face {
+  font-family: 'GillSans Light';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../assets/fonts/GillSans Light/GillSans-Light.eot');
+  src: url('../assets/fonts/GillSans Light/GillSans-Light.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/GillSans Light/GillSans-Light.woff') format('woff'), url('../assets/fonts/GillSans Light/GillSans-Light.ttf') format('truetype'), url('../assets/fonts/GillSans Light/GillSans-Light.svg#GillSans Light') format('svg'); }
+
+/*
+    Utils
+    CSS eases, normalize,
+    SCSS mixins & extends
+ */
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0; }
+
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11 and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+  display: block; }
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+audio, canvas, progress, video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */ }
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+[hidden], template {
+  display: none; }
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+a {
+  background: transparent; }
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+a:active, a:hover {
+  outline: 0; }
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+b, strong {
+  font-weight: bold; }
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+dfn {
+  font-style: italic; }
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+small {
+  font-size: 80%; }
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+img {
+  border: 0; }
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+figure {
+  margin: 1em 40px; }
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0; }
+
+/**
+ * Contain overflow in all browsers.
+ */
+pre {
+  overflow: auto; }
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+code, kbd, pre, samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+button, input, optgroup, select, textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */ }
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+button {
+  overflow: visible; }
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+button, select {
+  text-transform: none; }
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled], html input[disabled] {
+  cursor: default; }
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+input {
+  line-height: normal; }
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+input[type="checkbox"], input[type="radio"] {
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box; }
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+textarea {
+  overflow: auto; }
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+optgroup {
+  font-weight: bold; }
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td, th {
+  padding: 0; }
+
+/* Custom normalize */
+* {
+  outline: none; }
+
+:focus {
+  outline-color: transparent;
+  outline-style: none; }
+
+h1, h2, h3, h4, h5 {
+  font-weight: 400;
+  margin: 0; }
+
+p {
+  margin: 0; }
+
+ul, ol {
+  padding: 0;
+  margin: 0; }
+
+html, body, .home, .home .cloud-container, .home .ground, .travel .end {
+  width: 100%;
+  height: 100%; }
+
+html, body {
+  margin: 0;
+  padding: 0; }
+
+body {
+  color: black;
+  background: white;
+  position: relative;
+  font-family: 'GillSans'; }
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll; }
+
+[v-cloak] {
+  display: none; }
+
+input[type=text]:focus, textarea:focus {
+  box-shadow: none;
+  border: none;
+  outline: none; }
+
+a {
+  color: black;
+  text-decoration: none; }
+
+ul, li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+/*
+    Sections and components styles
+ */
+.travel-text {
+  position: absolute;
+  top: 0; }
+  .travel-text.white {
+    color: #e1e1e1; }
+  .travel-text.grey {
+    color: #999999; }
+  .travel-text .line {
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase; }
+    .travel-text .line.big {
+      line-height: 0.95;
+      font-size: 58px;
+      font-weight: bold; }
+      @media screen and (max-width: 1150px) {
+        .travel-text .line.big {
+          font-size: 50px; } }
+      @media screen and (max-width: 1020px) {
+        .travel-text .line.big {
+          font-size: 45px; } }
+      @media screen and (max-width: 850px) {
+        .travel-text .line.big {
+          font-size: 40px; } }
+      @media screen and (max-width: 768px) {
+        .travel-text .line.big {
+          font-size: 35px; } }
+      @media screen and (max-width: 680px) {
+        .travel-text .line.big {
+          font-size: 32px; } }
+      @media screen and (max-width: 595px) {
+        .travel-text .line.big {
+          font-size: 28px; } }
+      @media screen and (max-width: 530px) {
+        .travel-text .line.big {
+          font-size: 24px; } }
+      @media screen and (max-width: 450px) {
+        .travel-text .line.big {
+          font-size: 20px; } }
+    .travel-text .line.medium {
+      line-height: 1;
+      font-size: 35px;
+      font-weight: lighter; }
+      @media screen and (max-width: 1150px) {
+        .travel-text .line.medium {
+          font-size: 27px; } }
+      @media screen and (max-width: 1020px) {
+        .travel-text .line.medium {
+          font-size: 20px; } }
+      @media screen and (max-width: 850px) {
+        .travel-text .line.medium {
+          font-size: 18px; } }
+      @media screen and (max-width: 595px) {
+        .travel-text .line.medium {
+          font-size: 15px; } }
+      @media screen and (max-width: 530px) {
+        .travel-text .line.medium {
+          font-size: 14px; } }
+      @media screen and (max-width: 450px) {
+        .travel-text .line.medium {
+          font-size: 12px; } }
+    .travel-text .line.small {
+      line-height: 1.1;
+      font-size: 20px;
+      font-family: 'GillSans Light'; }
+      @media screen and (max-width: 1150px) {
+        .travel-text .line.small {
+          font-size: 15px; } }
+      @media screen and (max-width: 1020px) {
+        .travel-text .line.small {
+          font-size: 12px; } }
+    .travel-text .line.no-transform {
+      font-family: 'GillSans Light';
+      text-transform: none; }
+    .travel-text .line.offset-left {
+      display: inline-block; }
+    .travel-text .line.offset-right {
+      display: inline-block; }
+
+.home {
+  background-image: url(../assets/images/home/background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden; }
+  .home .cloud-container {
+    position: absolute;
+    z-index: 1; }
+    .home .cloud-container .cloud {
+      position: absolute; }
+      .home .cloud-container .cloud.right {
+        top: 10%;
+        right: -19%; }
+      .home .cloud-container .cloud.left {
+        left: -50%; }
+  .home .ground {
+    background-image: url(../assets/images/home/foreground.png), url(../assets/images/home/middleground.png);
+    background-repeat: no-repeat, no-repeat;
+    background-position: left bottom, left bottom;
+    background-size: cover, cover;
+    position: absolute;
+    z-index: 2; }
+  .home .content {
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 2;
+    color: #0087CD;
+    font-family: 'GillSans Light'; }
+    @media screen and (max-width: 560px) {
+      .home .content {
+        width: 90%;
+        top: 33%;
+        left: 8%; } }
+    .home .content img {
+      -webkit-transform: translateY(25px);
+      -ms-transform: translateY(25px);
+      transform: translateY(25px); }
+    .home .content h1 {
+      font-size: 72px; }
+      @media screen and (max-width: 1170px) {
+        .home .content h1 {
+          font-size: 65px; } }
+      @media screen and (max-width: 1060px) {
+        .home .content h1 {
+          font-size: 60px; } }
+      @media screen and (max-width: 980px) {
+        .home .content h1 {
+          font-size: 55px; } }
+      @media screen and (max-width: 495px) {
+        .home .content h1 {
+          font-size: 45px; } }
+    .home .content .button {
+      display: block;
+      width: 170px;
+      text-align: center;
+      text-transform: uppercase;
+      border: solid 2px #0087CD;
+      padding: 15px 30px;
+      margin: 40px 0 0 33%;
+      cursor: pointer;
+      color: #0087CD;
+      font-weight: bold;
+      letter-spacing: 1px; }
+      @media screen and (max-width: 885px) {
+        .home .content .button {
+          margin-left: 5%; } }
+      @media screen and (max-width: 560px) {
+        .home .content .button {
+          margin: 15px auto; } }
+
+.travel .end {
+  background: url(../assets/images/end/background.png);
+  background-size: cover; }
+  .travel .end .content {
+    width: 50%;
+    height: 50%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    color: #0087CD;
+    font-family: 'GillSans Light';
+    font-size: 54px; }
+    .travel .end .content .regular {
+      font-family: 'GillSans'; }
+    @media screen and (max-width: 1050px) {
+      .travel .end .content {
+        font-size: 47px; } }
+    @media screen and (max-width: 890px) {
+      .travel .end .content {
+        font-size: 42px;
+        width: 70%; } }
+    @media screen and (max-width: 650px) {
+      .travel .end .content {
+        font-size: 35px;
+        width: 90%; } }
+    @media screen and (max-width: 480px) {
+      .travel .end .content {
+        font-size: 30px;
+        width: 90%; } }
+.travel .universes {
+  overflow: hidden; }
+  .travel .universes .universe {
+    position: relative;
+    width: 100%;
+    height: 1920px;
+    overflow: hidden;
+    -webkit-perspective: 1px;
+            perspective: 1px; }
+    .travel .universes .universe .background, .travel .universes .universe .middleground, .travel .universes .universe .foreground {
+      position: absolute;
+      width: 100%; }
+    .travel .universes .universe .background {
+      z-index: 1;
+      -webkit-transform: translateZ(-2px) scale(3);
+      -ms-transform: translateZ(-2px) scale(3);
+      transform: translateZ(-2px) scale(3); }
+    .travel .universes .universe .middleground {
+      z-index: 2;
+      -webkit-transform: translateZ(-1px) scale(2);
+      -ms-transform: translateZ(-1px) scale(2);
+      transform: translateZ(-1px) scale(2); }
+    .travel .universes .universe .foreground {
+      z-index: 3;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0); }
+    .travel .universes .universe.gnor .cloud {
+      position: absolute;
+      z-index: 2;
+      width: 43%; }
+      .travel .universes .universe.gnor .cloud.right {
+        left: 50%;
+        top: 5%; }
+      .travel .universes .universe.gnor .cloud.left {
+        left: -4%;
+        top: 35%; }
+  .travel .universes .railway {
+    position: absolute;
+    width: 100%;
+    z-index: 4;
+    top: 0;
+    left: 0; }
+    .travel .universes .railway .train {
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%); }
+  .travel .universes .transition {
+    position: absolute;
+    width: 100%;
+    z-index: 5; }
+    .travel .universes .transition.crtp-lyo1 {
+      left: -1%; }
+      .travel .universes .transition.crtp-lyo1 svg {
+        width: 101%; }
+    .travel .universes .transition.gnor-end .cloud, .travel .universes .transition.lyo1-gnor .cloud {
+      position: absolute;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%); }
+      .travel .universes .transition.gnor-end .cloud.left, .travel .universes .transition.lyo1-gnor .cloud.left {
+        width: 88%;
+        left: -17%; }
+      .travel .universes .transition.gnor-end .cloud.right, .travel .universes .transition.lyo1-gnor .cloud.right {
+        width: 88%;
+        right: -17%; }
+.travel .text {
+  position: absolute;
+  top: 0; }
+  .travel .text.white {
+    color: #e1e1e1; }
+  .travel .text.grey {
+    color: #999999; }
+  .travel .text .line {
+    line-height: 0.85;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase; }
+    .travel .text .line.big {
+      font-size: 50px;
+      font-weight: bold; }
+    .travel .text .line.medium {
+      font-size: 30px;
+      font-weight: lighter; }
+    .travel .text .line.small {
+      font-size: 17px;
+      font-weight: lighter; }
+    .travel .text .line.no-transform {
+      text-transform: none; }
+    .travel .text .line.offset-left {
+      display: inline-block; }
+    .travel .text .line.offset-right {
+      display: inline-block; }

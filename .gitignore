@@ -1,5 +1,4 @@
 .DS_Store
-node_modules
-build/
-dist/
 .sass-cache
+node_modules/*
+!node_modules/vue-query
