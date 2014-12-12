@@ -1,3 +1,5 @@
+$button-width: 170px;
+
 .home {
     @extend %full-size;
     background-image: url(../assets/images/home/background.jpg);
@@ -76,7 +78,7 @@
 
         .button {
             display: block;
-            width: 170px;
+            width: $button-width;
             text-align: center;
             text-transform: uppercase;
             border: solid 2px $light-blue;
@@ -93,7 +95,22 @@
             @include max-screen(560px) {
                 margin: 15px auto;
             }
+        }
 
+        .button-background {
+            position: absolute;
+            margin: 40px 0 0 33%;
+
+            @include max-screen(885px) {
+                margin-left: 5%;
+            }
+            @include max-screen(560px) {
+                margin: 15px 0 0 calc(50% - #{$button-width/2});
+            }
+
+            polygon {
+                fill: $light-blue;
+            }
         }
     }
 }
