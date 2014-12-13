@@ -63,24 +63,26 @@ module.exports = extend(true, {}, section, {
         },
         onLoadProgress: function (e) {
             this.progress = e.progress;
+            this.$findOne('#percent').innerText = Math.floor(this.progress*100);
         },
         onLoadComplete: function (e) {
             this.progress = 1;
-            TweenMax.set(this.$findOne('.main'), {alpha: 1});
-            TweenMax.set(this.$findOne('.loader'), {alpha: 0});
+            this.$findOne('#percent').innerText = Math.floor(this.progress*100);
+            TweenMax.to(this.$findOne('.main'), 0.2, {alpha: 1});
+            TweenMax.to(this.$findOne('.loader'), 0.2, {alpha: 0});
             this.playTransitionIn();
         },
         insertTweens: function() {
-            this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
-            this.tlTransition.fromTo(this.$findOne('.cloud.left'), 0.8, {xPercent: '-100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.7);
-            this.tlTransition.fromTo(this.$findOne('.cloud.right'), 0.8, {xPercent: '100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.7);
+            this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
+            this.tlTransition.fromTo(this.$findOne('.cloud.left'), 0.8, {xPercent: '-100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.fromTo(this.$findOne('.cloud.right'), 0.8, {xPercent: '100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.4);
             this.tlTransition.staggerFromTo(
                 [this.$findOne('.content img'), this.$findOne('.content h1'), [this.$findOne('.button'), this.$findOne('.button-background')]],
                 1.0,
                 {y: 100, alpha: 0},
                 {y: 0, alpha: 1, ease: Expo.easeOut},
                 0.08,
-                1.2);
+                0.9);
         },
         beforeTransitionIn: function() {
             this.resize();
@@ -108,7 +110,7 @@ module.exports = extend(true, {}, section, {
             this.tlMouseOut.fromTo(points[0], 0.4, {x: 0}, {x: 170, ease: Expo.easeOut}, 0.06);
         },
         resize: function() {
-            TweenMax.set(this.$el, {width: resizeUtil.width, height: resizeUtil.height});
+            TweenMax.set(this.$findOne('.main'), {width: resizeUtil.width, height: resizeUtil.height});
         },
         scroll: function() {
             // Prevent scrollX

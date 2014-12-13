@@ -1,116 +1,127 @@
 $button-width: 170px;
 
 .home {
-    @extend %full-size;
-    background-image: url(../assets/images/home/background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    overflow: hidden;
-
-    .cloud-container {
+    .main {
         @extend %full-size;
-        position: absolute;
-        z-index: 1;
+        background-image: url(../assets/images/home/background.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
 
-        .cloud {
+        overflow: hidden;
+
+        .cloud-container {
+            @extend %full-size;
             position: absolute;
+            z-index: 1;
 
-            &.right {
-                top: 10%;
-                right: -19%;
-            }
+            .cloud {
+                position: absolute;
 
-            &.left {
-                left: -50%;
-            }
-        }
-    }
+                &.right {
+                    top: 10%;
+                    right: -19%;
+                }
 
-    .ground {
-        @extend %full-size;
-        background-image: url(../assets/images/home/foreground.png), url(../assets/images/home/middleground.png);
-        background-repeat: no-repeat, no-repeat;
-        background-position: left bottom, left bottom;
-        background-size: cover, cover;
-
-        position: absolute;
-        z-index: 2;
-    }
-
-    .content {
-        width: 50%;
-        position: absolute;
-        left: 50%;
-        top: 56%;
-        @include transform( translateY(-50%) );
-        z-index: 2;
-        color: $light-blue;
-        @include gill-sans-light();
-
-
-        @include max-screen(560px) {
-            width: 90%;
-            top: 33%;
-            left: 8%;
-        }
-
-        img {
-            @include transform( translateY( 25px ) );
-        }
-
-        h1 {
-            font-size: 72px;
-
-            @include max-screen(1170px) {
-                font-size: 65px;
-            }
-            @include max-screen(1060px) {
-                font-size: 60px;
-            }
-            @include max-screen(980px) {
-                font-size: 55px;
-            }
-            @include max-screen(495px) {
-                font-size: 45px;
+                &.left {
+                    left: -50%;
+                }
             }
         }
 
-        .button {
-            display: block;
-            width: $button-width;
-            text-align: center;
-            text-transform: uppercase;
-            border: solid 2px $light-blue;
-            padding: 15px 30px;
-            margin: 40px 0 0 33%;
-            cursor: pointer;
+        .ground {
+            @extend %full-size;
+            background-image: url(../assets/images/home/foreground.png), url(../assets/images/home/middleground.png);
+            background-repeat: no-repeat, no-repeat;
+            background-position: left bottom, left bottom;
+            background-size: cover, cover;
+
+            position: absolute;
+            z-index: 2;
+        }
+
+        .content {
+            width: 50%;
+            position: absolute;
+            left: 50%;
+            top: 56%;
+            @include transform( translateY(-50%) );
+            z-index: 2;
             color: $light-blue;
-            font-weight: bold;
-            letter-spacing: 1px;
+            @include gill-sans-light();
 
-            @include max-screen(885px) {
-                margin-left: 5%;
-            }
+
             @include max-screen(560px) {
-                margin: 15px auto;
+                width: 90%;
+                top: 33%;
+                left: 8%;
+            }
+
+            img {
+                @include transform( translateY( 25px ) );
+            }
+
+            h1 {
+                font-size: 72px;
+
+                @include max-screen(1170px) {
+                    font-size: 65px;
+                }
+                @include max-screen(1060px) {
+                    font-size: 60px;
+                }
+                @include max-screen(980px) {
+                    font-size: 55px;
+                }
+                @include max-screen(495px) {
+                    font-size: 45px;
+                }
+            }
+
+            .button {
+                display: block;
+                width: $button-width;
+                text-align: center;
+                text-transform: uppercase;
+                border: solid 2px $light-blue;
+                padding: 15px 30px;
+                margin: 40px 0 0 33%;
+                cursor: pointer;
+                color: $light-blue;
+                font-weight: bold;
+                letter-spacing: 1px;
+
+                @include max-screen(885px) {
+                    margin-left: 5%;
+                }
+                @include max-screen(560px) {
+                    margin: 15px auto;
+                }
+            }
+
+            .button-background {
+                position: absolute;
+                margin: 40px 0 0 33%;
+
+                @include max-screen(885px) {
+                    margin-left: 5%;
+                }
+                @include max-screen(560px) {
+                    margin: 15px 0 0 calc(50% - #{$button-width/2});
+                }
+
+                polygon {
+                    fill: $light-blue;
+                }
             }
         }
-
-        .button-background {
-            position: absolute;
-            margin: 40px 0 0 33%;
-
-            @include max-screen(885px) {
-                margin-left: 5%;
-            }
-            @include max-screen(560px) {
-                margin: 15px 0 0 calc(50% - #{$button-width/2});
-            }
-
-            polygon {
-                fill: $light-blue;
-            }
-        }
+    }
+    .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        @include transform( translateX(-50%) translateY(-50%) );
+        color: $light-blue;
+        text-align: center;
+        font-size: 30px;
     }
 }

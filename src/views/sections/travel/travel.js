@@ -47,6 +47,7 @@ module.exports = extend(true, {}, section, {
             this.$on('data:received', function () {
                 var nbRequest = 5;
                 this.progress++;
+                this.$findOne('#percent').innerText = Math.floor((this.progress/nbRequest)*100);
                 if ( this.progress == nbRequest ) {
                     // On complete
                     this.$emit('ready');
@@ -56,10 +57,9 @@ module.exports = extend(true, {}, section, {
             this.getData();
         },
         insertTweens: function() {
-            this.tlTransition.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0);
             this.tlTransition.set(this.$findOne('.main'), {alpha: 0}, 0);
             this.tlTransition.set(this.$findOne('.loader'), {alpha: 1}, 0);
-            this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
+            this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
         },
         beforeTransitionIn: function() {
             this.resize();
@@ -285,8 +285,9 @@ module.exports = extend(true, {}, section, {
 
             this.scrollInit = true;
 
-            TweenMax.set(this.$findOne('.main'), {alpha: 1});
-            TweenMax.set(this.$findOne('.loader'), {alpha: 0});
+            TweenMax.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}});
+            TweenMax.to(this.$findOne('.main'), 0.2, {alpha: 1});
+            TweenMax.to(this.$findOne('.loader'), 0.2, {alpha: 0});
 
             this.animateTexts();
 
