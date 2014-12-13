@@ -20,6 +20,7 @@ module.exports = extend(true, {}, section, {
         path: '/travel'
     },
     data: {
+        progress: 0,
         scrollInit: false,
         freeScroll: false,
         dataInit: false,
@@ -42,14 +43,25 @@ module.exports = extend(true, {}, section, {
         'travel-text': require('../../components/travel-text/travel-text')
     },
     methods: {
+        load: function () {
+            this.$on('data:received', function () {
+                var nbRequest = 5;
+                this.progress++;
+                if ( this.progress == nbRequest ) {
+                    // On complete
+                    this.$emit('ready');
+                }
+            });
+
+            this.getData();
+        },
         insertTweens: function() {
+            this.tlTransition.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0);
+            this.tlTransition.set(this.$findOne('.main'), {alpha: 0}, 0);
+            this.tlTransition.set(this.$findOne('.loader'), {alpha: 1}, 0);
             this.tlTransition.fromTo(this.$el, 0.7, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
-            this.tlTransition.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0.4);
         },
         beforeTransitionIn: function() {
-            if(!config.useFakeData) {
-                this.getData();
-            }
             this.resize();
         },
         getData: function () {
@@ -66,7 +78,8 @@ module.exports = extend(true, {}, section, {
                 travelTexts[13].second.content = data.sncf.percentOfNetwork + '%';
                 travelTexts[12].first.content = data.sncf.percentOfTraffic + '%';
                 travelTexts[11].first.content = data.sncf.percentOfTravellers + '%';
-            });
+                this.$emit('data:received');
+            }.bind(this));
 
             // data about Gare de Lyon
             request.get(config.apiUrl + '/ecs/LYO1', function(res) {
@@ -76,6 +89,7 @@ module.exports = extend(true, {}, section, {
 
                 var travellersDay = JSON.parse(res.text);
                 travelTexts[8].second.content = 'c\'est <span id="value">' + travellersDay + '</span>';
+                this.$emit('data:received');
 
                 request.get(config.apiUrl + '/ecs-rushhour/LYO1', function(res) {
                     if (res.status >= 400) {
@@ -83,8 +97,9 @@ module.exports = extend(true, {}, section, {
                     }
                     var data = JSON.parse(res.text);
                     travelTexts[7].second.content = (travellersDay > 0) ? Math.floor(100*(data/ travellersDay)) + '%' : 0 + '%';
-                });
-            });
+                    this.$emit('data:received');
+                }.bind(this));
+            }.bind(this));
 
             request.get(config.apiUrl + '/ecs-time/LYO1/0905', function(res) {
                 if (res.status >= 400) {
@@ -94,6 +109,7 @@ module.exports = extend(true, {}, section, {
                 var data = JSON.parse(res.text);
                 var prevCount = 0;
                 travelTexts[6].first.content = prevCount = data;
+                this.$emit('data:received');
 
                 request.get(config.apiUrl + '/ecs-time/LYO1/0850', function(res) {
                     if (res.status >= 400) {
@@ -105,9 +121,9 @@ module.exports = extend(true, {}, section, {
                     travelTexts[5].first.content = Math.floor(prevCount/data) + end;
                     // 1850 = how many seated places a train has.
                     travelTexts[3].second.content = 'c\'est ' +  Math.floor((1/prevCount/data)*1850) + '%';
-
-                });
-            });
+                    this.$emit('data:received');
+                }.bind(this));
+            }.bind(this));
 
         },
         resize: function() {
@@ -230,7 +246,8 @@ module.exports = extend(true, {}, section, {
             this.tlTexts.staggerFromTo(this.$find('#text-9 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 27);
             this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 28);
             this.tlTexts.staggerFromTo(this.$find('#text-8 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 28);
-            this.tlTexts.fromTo(this.$findOne('#value'), 1.2, {innerText: 0}, {innerText: travellersDay, onUpdate: function () {
+            this.tlTexts.fromTo(this.$findOne('#value'), 1.2, {innerText: 0}, {innerText: travellersDay, ease: Linear.easeNone,
+                onUpdate: function () {
                     this.$findOne('#value').innerText = Math.floor(this.$findOne('#value').innerText);
                 }.bind(this)
             }, 28);
@@ -252,11 +269,24 @@ module.exports = extend(true, {}, section, {
             this.tlTexts.set(this.$findOne('#text-0'), {alpha: 1}, 71);
             this.tlTexts.staggerFromTo(this.$find('#text-0 .line'), 0.6, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Back.easeOut}, 0.06, 71);
         },
+        onStationClick: function () {
+            this.railway.pauseAnimations();
+            this.tlTexts.pause();
+            // Waiting for design to implement pop ups
+        },
+        onCloseStationClick: function () {
+            this.railway.unpauseAnimations();
+            this.tlTexts.play();
+            // Waiting for design to implement pop ups
+        },
         init: function() {
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
 
             this.scrollInit = true;
+
+            TweenMax.set(this.$findOne('.main'), {alpha: 1});
+            TweenMax.set(this.$findOne('.loader'), {alpha: 0});
 
             this.animateTexts();
 
@@ -290,15 +320,34 @@ module.exports = extend(true, {}, section, {
             }.bind(this));
         }
     },
-
     ready: function() {
-        this.$once('section:transitionInComplete', function() {
+        this.$once('ready', function() {
             this.init();
         });
+
+        this.$once('section:transitionInComplete', function() {
+            if(config.useFakeData) {
+                this.$emit('ready');
+            } else {
+                this.load();
+            }
+        });
+
         bindAll(this, 'resize', 'scroll', 'init', 'getData');
     },
     beforeDestroy: function() {
         resizeUtil.removeListener(this.resize);
         scrollUtil.removeListener(this.scroll);
+        this.$el.removeEventListener('mousewheel', function (e) {
+            if (false === this.freeScroll) {
+                e.preventDefault();
+            }
+        }.bind(this));
+        this.$el.removeEventListener('DOMMouseScroll', function (e) {
+            // firefox
+            if (false === this.freeScroll) {
+                e.preventDefault();
+            }
+        }.bind(this));
     }
 });

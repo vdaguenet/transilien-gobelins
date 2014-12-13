@@ -6,6 +6,7 @@ var Vue = require('vue'),
     bindAll = require('bindall-standalone'),
     scrollUtil = require('common/utils/scroll-util'),
     resizeUtil = require('common/utils/resize-util'),
+    preloadjs = require('preloadjs'),
     section = require('base/section');
 
 module.exports = extend(true, {}, section, {
@@ -16,9 +17,59 @@ module.exports = extend(true, {}, section, {
         path: '/home'
     },
     data: {
-
+        progress: 0
     },
+    manifest: [
+        // /home assets
+        '../assets/images/home/background.jpg',
+        '../assets/images/home/middleground.png',
+        '../assets/images/home/foreground.png',
+        '../assets/images/home/cloud-right.png',
+        '../assets/images/home/cloud-left.png',
+        '../assets/images/logo-transilien.png',
+        // /travel assets
+        '../assets/images/universes/gnor/background.jpg',
+        '../assets/images/universes/gnor/cloud.png',
+        '../assets/images/universes/gnor/middleground-1.png',
+        '../assets/images/universes/gnor/cloud.png',
+        '../assets/images/universes/gnor/middleground-2.png',
+        '../assets/images/universes/gnor/middleground-3.png',
+        '../assets/images/universes/gnor/foreground.png',
+        '../assets/images/universes/lyo1/background.jpg',
+        '../assets/images/universes/lyo1/middleground.png',
+        '../assets/images/universes/lyo1/foreground.png',
+        '../assets/images/universes/crtp/background.jpg',
+        '../assets/images/universes/crtp/middleground.png',
+        '../assets/images/universes/crtp/foreground.png',
+        '../assets/images/universes/line.svg',
+        '../assets/images/universes/transition/rock.svg',
+        '../assets/images/universes/transition/cloud-right.png',
+        '../assets/images/universes/transition/cloud-left.png'
+    ],
     methods: {
+        load: function () {
+            TweenMax.set(this.$findOne('.main'), {alpha: 0});
+            TweenMax.set(this.$findOne('.loader'), {alpha: 1});
+            var manifest = this.$options.manifest;
+
+            this.preloader = new createjs.LoadQueue();
+            this.preloader.on('error', this.onLoadError);
+            this.preloader.on('progress', this.onLoadProgress);
+            this.preloader.on('complete', this.onLoadComplete);
+            this.preloader.loadManifest(manifest);
+        },
+        onLoadError: function (e) {
+            console.error("Can not load manifest");
+        },
+        onLoadProgress: function (e) {
+            this.progress = e.progress;
+        },
+        onLoadComplete: function (e) {
+            this.progress = 1;
+            TweenMax.set(this.$findOne('.main'), {alpha: 1});
+            TweenMax.set(this.$findOne('.loader'), {alpha: 0});
+            this.playTransitionIn();
+        },
         insertTweens: function() {
             this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0.4);
             this.tlTransition.fromTo(this.$findOne('.cloud.left'), 0.8, {xPercent: '-100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.7);
@@ -74,19 +125,31 @@ module.exports = extend(true, {}, section, {
     },
 
     ready: function() {
+        bindAll(this, 'load', 'init', 'resize', 'scroll', 'onMouseEnter', 'onMouseOut', 'onLoadProgress', 'onLoadComplete', 'onLoadError');
+
         this.$once('section:transitionInComplete', function() {
-            this.$findOne('.button').addEventListener('mouseenter', this.onMouseEnter.bind(this));
-            this.$findOne('.button').addEventListener('mouseleave', this.onMouseOut.bind(this));
+            this.$findOne('.button').addEventListener('mouseenter', this.onMouseEnter);
+            this.$findOne('.button').addEventListener('mouseleave', this.onMouseOut);
         });
 
-        bindAll(this, 'init', 'resize', 'scroll');
+        this.$once('section:routed', function () {
+            this.load();
+        });
+
         Vue.nextTick(this.init);
     },
 
     beforeDestroy: function() {
+        if(this.preloader) {
+            this.preloader.setPaused(true);
+            this.preloader.off();
+            this.preloader.removeAll();
+            this.preloader.close();
+            this.preloader = null;
+        }
         resizeUtil.removeListener(this.resize);
         scrollUtil.removeListener(this.scroll);
-        this.$findOne('.button').removeEventListener('mouseenter', this.onMouseEnter.bind(this));
-        this.$findOne('.button').removeEventListener('mouseleave', this.onMouseOut.bind(this));
+        this.$findOne('.button').removeEventListener('mouseenter', this.onMouseEnter);
+        this.$findOne('.button').removeEventListener('mouseleave', this.onMouseOut);
     }
 });

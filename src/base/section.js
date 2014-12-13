@@ -116,7 +116,8 @@ module.exports = {
 
         this.$once('hook:routed', function() {
             // If we want to handle preload or promises resolving
-        });
+            this.$emit('section:routed');
+        }.bind(this));
 
         this.$once('hook:beforeDestroy', function() {
             if(this.tlTransition) {

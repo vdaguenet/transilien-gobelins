@@ -30,19 +30,22 @@
     "TweenMax": "./node_modules/greensock/src/minified/TweenMax.min.js",
     "TweenMax.ScrollToPlugin": "./node_modules/greensock/src/minified/plugins/ScrollToPlugin.min.js",
     "fit": "./node_modules/fit/fit.min.js",
-    "forEach": "./node_modules/foreach.js/dist/foreach.min.js"
+    "forEach": "./node_modules/foreach.js/dist/foreach.min.js",
+    "preloadjs": "./node_modules/preloadjs/lib/preloadjs-0.6.0.min.js"
   },
   "browserify-shim": {
     "TweenMax": "TweenMax",
     "fit": "fit",
     "forEach": "forEach",
-    "vue-query": "vue-query"
+    "vue-query": "vue-query",
+    "preloadjs": "preloadjs"
   },
   "napa": {
     "greensock": "greensock/GreenSock-JS",
     "fit": "soulwire/fit.js",
     "foreach.js": "toddmotto/foreach",
-    "vue-query": "ayamflow/vue-query"
+    "vue-query": "ayamflow/vue-query",
+    "preloadjs": "CreateJS/PreloadJS"
   },
   "devDependencies": {
     "gulp": "*",
