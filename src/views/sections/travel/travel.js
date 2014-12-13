@@ -75,7 +75,7 @@ module.exports = extend(true, {}, section, {
                 }
 
                 var travellersDay = JSON.parse(res.text);
-                travelTexts[8].second.content = 'c\'est ' + travellersDay;
+                travelTexts[8].second.content = 'c\'est <span id="value">' + travellersDay + '</span>';
 
                 request.get(config.apiUrl + '/ecs-rushhour/LYO1', function(res) {
                     if (res.status >= 400) {
@@ -103,10 +103,8 @@ module.exports = extend(true, {}, section, {
                     var data = (JSON.parse(res.text) > 0) ? JSON.parse(res.text) : 1;
                     var end = (prevCount > data) ? ' fois moins' : ' fois plus';
                     travelTexts[5].first.content = Math.floor(prevCount/data) + end;
-
-                    var seatsBusy = (1/prevCount/data)*1850;
-                    var seatsFree = 1850 - seatsBusy;
-                    travelTexts[3].second.content = 'c\'est ' +  Math.floor(seatsFree*100/1850) + '%';
+                    // 1850 = how many seated places a train has.
+                    travelTexts[3].second.content = 'c\'est ' +  Math.floor((1/prevCount/data)*1850) + '%';
 
                 });
             });
@@ -174,14 +172,6 @@ module.exports = extend(true, {}, section, {
             this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
 
             if (this.universes.order[ this.universes.current ]) {
-                if (this.scrollEnd) {
-                    clearTimeout(this.scrollEnd);
-                }
-                this.railway.unpauseAnimations();
-                this.scrollEnd = setTimeout(function () {
-                    this.railway.pauseAnimations();
-                }.bind(this), 400);
-
                 var currentClass = '.' + this.universes.order[ this.universes.current ];
                 var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
 
@@ -199,7 +189,7 @@ module.exports = extend(true, {}, section, {
                         // Let break that rock!
                         if(crossedPercentInUniverse > 60) {
                             var groups = this.$find('.transition.crtp-lyo1 #transition g');
-                            TweenMax.staggerTo(groups, 2.3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
+                            TweenMax.staggerTo(groups, 3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
                         }
 
                         break;
@@ -219,28 +209,48 @@ module.exports = extend(true, {}, section, {
             }
         },
         animateTexts: function () {
+            var travellersDay = parseInt(this.$findOne('#value').innerText);
+
             this.tlTexts = new TimelineMax();
             this.tlTexts.set(this.$findOne('#text-16'), {alpha: 1}, 0);
-            this.tlTexts.staggerFromTo(this.$find('#text-16 .line'), 0.7, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0);
+            this.tlTexts.staggerFromTo(this.$find('#text-16 .line'), 0.6, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.06, 0);
             this.tlTexts.set(this.$findOne('#text-15'), {alpha: 1}, 0.4);
-            this.tlTexts.staggerFromTo(this.$find('#text-15 .line'), 0.7, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0.4);
+            this.tlTexts.staggerFromTo(this.$find('#text-15 .line'), 0.6, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.06, 0.4);
             this.tlTexts.set(this.$findOne('#text-14'), {alpha: 1}, 0.8);
-            this.tlTexts.staggerFromTo(this.$find('#text-14 .line'), 0.7, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 0.8);
+            this.tlTexts.staggerFromTo(this.$find('#text-14 .line'), 0.6, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.06, 0.8);
             this.tlTexts.set(this.$findOne('#text-13'), {alpha: 1}, 4);
-            this.tlTexts.staggerFromTo(this.$find('#text-13 .line'), 0.7, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.08, 4);
+            this.tlTexts.staggerFromTo(this.$find('#text-13 .line'), 0.6, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Expo.easeInOut}, 0.06, 4);
             this.tlTexts.set(this.$findOne('#text-12'), {alpha: 1}, 6);
+            this.tlTexts.staggerFromTo(this.$find('#text-12 .line'), 0.6, {scale: 0}, {scale: 1, ease: Back.easeOut}, 0.06, 6);
             this.tlTexts.set(this.$findOne('#text-11'), {alpha: 1}, 9);
+            this.tlTexts.staggerFromTo(this.$find('#text-11 .line'), 0.6, {scale: 0}, {scale: 1, ease: Back.easeOut}, 0.06, 9);
             this.tlTexts.set(this.$findOne('#text-10'), {alpha: 1}, 12);
+            this.tlTexts.staggerFromTo(this.$find('#text-10 .line'), 0.6, {y: -70, alpha: 0}, {y: 0, alpha: 1, ease: Expo.easeOut}, 0.06, 12);
             this.tlTexts.set(this.$findOne('#text-9'), {alpha: 1}, 27);
-            this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 29);
+            this.tlTexts.staggerFromTo(this.$find('#text-9 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 27);
+            this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 28);
+            this.tlTexts.staggerFromTo(this.$find('#text-8 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 28);
+            this.tlTexts.fromTo(this.$findOne('#value'), 1.2, {innerText: 0}, {innerText: travellersDay, onUpdate: function () {
+                    this.$findOne('#value').innerText = Math.floor(this.$findOne('#value').innerText);
+                }.bind(this)
+            }, 28);
             this.tlTexts.set(this.$findOne('#text-7'), {alpha: 1}, 32);
+            this.tlTexts.staggerFromTo(this.$find('#text-7 .line'), 0.6, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Back.easeOut}, 0.06, 32);
             this.tlTexts.set(this.$findOne('#text-6'), {alpha: 1}, 37);
+            this.tlTexts.staggerFromTo(this.$find('#text-6 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 37);
             this.tlTexts.set(this.$findOne('#text-5'), {alpha: 1}, 44.2);
+            this.tlTexts.fromTo(this.$find('#text-5 .line')[0], 0.4, {y: -50, alpha: 0}, {y: 0, alpha: 1,ease: Quart.easeOut}, 44.2);
+            this.tlTexts.fromTo(this.$find('#text-5 .line')[1], 0.4, {y: 50, alpha: 0}, {y: 0, alpha: 1, ease: Quart.easeOut},44.3);
             this.tlTexts.set(this.$findOne('#text-4'), {alpha: 1}, 52);
+            this.tlTexts.staggerFromTo(this.$find('#text-4 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 52);
             this.tlTexts.set(this.$findOne('#text-3'), {alpha: 1}, 58);
+            this.tlTexts.staggerFromTo(this.$find('#text-3 .line'), 0.6, {scale: 0}, {scale: 1, ease: Back.easeOut}, 0.06, 58);
             this.tlTexts.set(this.$findOne('#text-2'), {alpha: 1}, 63);
+            this.tlTexts.staggerFromTo(this.$find('#text-2 .line'), 0.6, {y: -70, alpha: 0}, {y: 0, alpha: 1, ease: Expo.easeOut}, 0.06, 63);
             this.tlTexts.set(this.$findOne('#text-1'), {alpha: 1}, 64.5);
+            this.tlTexts.staggerFromTo(this.$find('#text-1 .line'), 1.5, {y: -100, alpha: 0}, {y: 0, alpha: 1, ease: Expo.easeOut}, 0.2, 64.5);
             this.tlTexts.set(this.$findOne('#text-0'), {alpha: 1}, 71);
+            this.tlTexts.staggerFromTo(this.$find('#text-0 .line'), 0.6, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Back.easeOut}, 0.06, 71);
         },
         init: function() {
             resizeUtil.addListener(this.resize);
@@ -258,23 +268,26 @@ module.exports = extend(true, {}, section, {
                 },
                 ease: Linear.easeNone,
                 delay:  1.8,
+                onStart: function () {
+                    this.railway.unpauseAnimations();
+                }.bind(this),
                 onComplete: function () {
                     this.freeScroll = true;
                 }.bind(this)
             });
 
-
-            // this.$el.addEventListener('mousewheel', function (e) {
-            //     if (false === this.freeScroll) {
-            //         e.preventDefault();
-            //     }
-            // }.bind(this));
-            // this.$el.addEventListener('DOMMouseScroll', function (e) {
-            //     // firefox
-            //     if (false === this.freeScroll) {
-            //         e.preventDefault();
-            //     }
-            // }.bind(this));
+            // My apologizes to the #TeamScrollLibre :(
+            this.$el.addEventListener('mousewheel', function (e) {
+                if (false === this.freeScroll) {
+                    e.preventDefault();
+                }
+            }.bind(this));
+            this.$el.addEventListener('DOMMouseScroll', function (e) {
+                // firefox
+                if (false === this.freeScroll) {
+                    e.preventDefault();
+                }
+            }.bind(this));
         }
     },
 

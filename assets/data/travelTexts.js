@@ -180,7 +180,7 @@ module.exports = [
         },
         second: {
             style: 'medium',
-            content: 'c\'est 123456'
+            content: 'c\'est <span id="value">123456<span>'
         },
         third: {
             style: 'small',
