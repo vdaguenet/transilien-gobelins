@@ -201,14 +201,14 @@ module.exports = extend(true, {}, section, {
                 TweenMax.to(foregroundEls, 0.2, {y: 1.6*crossedPercentInUniverse, ease: Cubic.easeOut});
 
                 switch (this.universes.order[ this.universes.current ]) {
-                    case 'crtp':
-                        // Let break that rock!
-                        if(crossedPercentInUniverse > 60) {
-                            var groups = this.$find('.transition.crtp-lyo1 #transition g');
-                            TweenMax.staggerTo(groups, 3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
-                        }
+                    // case 'crtp':
+                    //     // Let break that rock!
+                    //     if(crossedPercentInUniverse > 60) {
+                    //         var groups = this.$find('.transition.crtp-lyo1 #transition g');
+                    //         TweenMax.staggerTo(groups, 3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
+                    //     }
 
-                        break;
+                    //     break;
                     case 'lyo1':
                         // Move clouds appart
                         TweenMax.to(this.transitions.cloudLeft, 0.4, {x: -1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
