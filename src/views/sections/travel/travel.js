@@ -63,6 +63,8 @@ module.exports = extend(true, {}, section, {
             this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
         },
         beforeTransitionIn: function() {
+            this.railway = this.$findOne('.railway svg');
+            this.railway.pauseAnimations();
             this.resize();
         },
         getData: function () {
@@ -135,7 +137,6 @@ module.exports = extend(true, {}, section, {
             this.transitions.cloudRight = this.$findOne('.transition.lyo1-gnor .cloud.right');
             this.transitions.cloudEndLeft = this.$findOne('.transition.gnor-end .cloud.left');
             this.transitions.cloudEndRight = this.$findOne('.transition.gnor-end .cloud.right');
-            this.railway = this.$findOne('.railway svg');
 
             // Set last screen
             TweenMax.set(this.$findOne('.end'), {height: resizeUtil.height});
@@ -149,7 +150,6 @@ module.exports = extend(true, {}, section, {
 
             // Set train & railway
             TweenMax.set(this.railway, {y: resizeUtil.height,height: sum, width: this.$findOne('.universes').offsetWidth});
-            this.railway.pauseAnimations();
 
             // Set transitions
             TweenMax.set(this.transitions.rock, {y: (-(sum/3)-((11/24)*this.transitions.rock.offsetHeight))});
