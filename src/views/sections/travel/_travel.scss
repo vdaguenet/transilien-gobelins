@@ -98,6 +98,10 @@ $arrow-width: 30px;
 
                 .train {
                     @include transform( translateY(-50%) );
+
+                    &.reversed {
+                        @include transform( rotateX(180deg) translateY(-58%) );
+                    }
                 }
             }
 

@@ -23,7 +23,6 @@ module.exports = extend(true, {}, section, {
         progress: 0,
         scrollInit: false,
         freeScroll: false,
-        dataInit: false,
         crossedPercent: 0,
         universes: {
             count: 3,
@@ -33,7 +32,9 @@ module.exports = extend(true, {}, section, {
         transitions: {
             rock: undefined,
             cloudLeft: undefined,
-            cloudRight: undefined
+            cloudRight: undefined,
+            cloudEndLeft: undefined,
+            cloudEndRight: undefined
         },
         railway: undefined,
         scrollEnd: null,
@@ -201,14 +202,12 @@ module.exports = extend(true, {}, section, {
                 TweenMax.to(foregroundEls, 0.2, {y: 1.6*crossedPercentInUniverse, ease: Cubic.easeOut});
 
                 switch (this.universes.order[ this.universes.current ]) {
-                    // case 'crtp':
-                    //     // Let break that rock!
-                    //     if(crossedPercentInUniverse > 60) {
-                    //         var groups = this.$find('.transition.crtp-lyo1 #transition g');
-                    //         TweenMax.staggerTo(groups, 3, {y: 1000, autoAlpha: 0, ease: Cubic.easeOut}, 0.08);
-                    //     }
-
-                    //     break;
+                    case 'crtp':
+                        // Reverse train
+                        if(crossedPercentInUniverse > 90) {
+                            this.addClass('reversed', '.train');
+                        }
+                        break;
                     case 'lyo1':
                         // Move clouds appart
                         TweenMax.to(this.transitions.cloudLeft, 0.4, {x: -1.2*crossedPercentInUniverse, ease: Cubic.easeOut});
@@ -242,15 +241,15 @@ module.exports = extend(true, {}, section, {
             this.tlTexts.staggerFromTo(this.$find('#text-11 .line'), 0.6, {scale: 0}, {scale: 1, ease: Back.easeOut}, 0.06, 9);
             this.tlTexts.set(this.$findOne('#text-10'), {alpha: 1}, 12);
             this.tlTexts.staggerFromTo(this.$find('#text-10 .line'), 0.6, {y: -70, alpha: 0}, {y: 0, alpha: 1, ease: Expo.easeOut}, 0.06, 12);
-            this.tlTexts.set(this.$findOne('#text-9'), {alpha: 1}, 27);
-            this.tlTexts.staggerFromTo(this.$find('#text-9 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 27);
-            this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 28);
-            this.tlTexts.staggerFromTo(this.$find('#text-8 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 28);
+            this.tlTexts.set(this.$findOne('#text-9'), {alpha: 1}, 24);
+            this.tlTexts.staggerFromTo(this.$find('#text-9 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 24);
+            this.tlTexts.set(this.$findOne('#text-8'), {alpha: 1}, 26);
+            this.tlTexts.staggerFromTo(this.$find('#text-8 .line'), 0.6, {alpha: 0}, {alpha: 1, ease: Expo.easeInOut}, 0.06, 26);
             this.tlTexts.fromTo(this.$findOne('#value'), 1.2, {innerText: 0}, {innerText: travellersDay, ease: Linear.easeNone,
                 onUpdate: function () {
                     this.$findOne('#value').innerText = Math.floor(this.$findOne('#value').innerText);
                 }.bind(this)
-            }, 28);
+            }, 26);
             this.tlTexts.set(this.$findOne('#text-7'), {alpha: 1}, 32);
             this.tlTexts.staggerFromTo(this.$find('#text-7 .line'), 0.6, {x: 100, alpha: 0}, {x: 0, alpha: 1, ease: Back.easeOut}, 0.06, 32);
             this.tlTexts.set(this.$findOne('#text-6'), {alpha: 1}, 37);
