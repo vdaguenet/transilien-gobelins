@@ -3,10 +3,13 @@
     top: 0;
 
     &.white {
-        color: rgb(225, 225, 225);
+        color: $white;
     }
     &.grey {
-        color: rgb(153, 153, 153);
+        color: $grey;
+    }
+    &.dark-grey {
+        color: $dark-grey;
     }
 
     .line {

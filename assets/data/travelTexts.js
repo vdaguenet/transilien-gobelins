@@ -8,7 +8,7 @@ module.exports = [
             x: 33,
             y: 3.8
         },
-        color: 'grey',
+        color: 'dark-grey',
         first: {
             style: 'small',
             content: 'Et peut-être faire'
@@ -24,7 +24,7 @@ module.exports = [
             x: 14,
             y: 10.5
         },
-        color: 'grey',
+        color: 'dark-grey',
         first: {
             style: 'medium',
             content: 'du'
@@ -48,7 +48,7 @@ module.exports = [
             x: 42,
             y: 14
         },
-        color: 'grey',
+        color: 'dark-grey',
         first: {
             style: 'medium',
             content: 'du stress'
@@ -64,7 +64,7 @@ module.exports = [
             x: 23,
             y: 21
         },
-        color: 'grey',
+        color: 'dark-grey',
         first: {
             style: 'small',
             content: 'partir plus tôt'
@@ -88,7 +88,7 @@ module.exports = [
             x: 73,
             y: 26
         },
-        color: 'grey',
+        color: 'dark-grey',
         first: {
             style: 'big',
             content: '30 minutes'
@@ -108,7 +108,7 @@ module.exports = [
             x: 48,
             y: 38
         },
-        color: 'white',
+        color: 'dark-grey',
         first: {
             style: 'big',
             content: '2 fois moins'
@@ -124,7 +124,7 @@ module.exports = [
             x: 72,
             y: 45
         },
-        color: 'white',
+        color: 'dark-grey',
         first: {
             style: 'medium',
             content: '123456'
@@ -145,10 +145,10 @@ module.exports = [
     {
         pos: {},
         posPercent: {
-            x: 90,
+            x: 87,
             y: 55
         },
-        color: 'white',
+        color: 'dark-grey',
         first: {
             style: 'small',
             noTransform: true,
@@ -171,9 +171,9 @@ module.exports = [
         pos: {},
         posPercent: {
             x: 50,
-            y: 59.3
+            y: 60
         },
-        color: 'white',
+        color: 'dark-grey',
         first: {
             style: 'medium',
             content: 'gare de lyon'
@@ -193,7 +193,7 @@ module.exports = [
             x: 82,
             y: 62
         },
-        color: 'white',
+        color: 'dark-grey',
         first: {
             style: 'small',
             content: 'un nombre'
@@ -226,7 +226,7 @@ module.exports = [
         second: {
             style: 'small',
             noTransform: true,
-            content: 'c\'est l\'équivalent d\'un <b>A380</b>'
+            content: 'c\'est l\'équivalent d\'un <b>Airbus A380</b>'
         },
         third: {
             style: 'small',
