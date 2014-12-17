@@ -18,12 +18,14 @@ $button-width: 170px;
                 position: absolute;
 
                 &.right {
-                    top: 10%;
-                    right: -19%;
+                    width: 100%;
+                    top: 6%;
+                    right: -21%;
                 }
 
                 &.left {
-                    left: -50%;
+                    width: 130%;
+                    left: -45%;
                 }
             }
         }
@@ -43,7 +45,7 @@ $button-width: 170px;
             width: 50%;
             position: absolute;
             left: 50%;
-            top: 56%;
+            top: 60%;
             @include transform( translateY(-50%) );
             z-index: 2;
             color: $light-blue;

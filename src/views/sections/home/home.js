@@ -142,13 +142,6 @@ module.exports = extend(true, {}, section, {
     },
 
     beforeDestroy: function() {
-        if(this.preloader) {
-            this.preloader.setPaused(true);
-            this.preloader.off();
-            this.preloader.removeAll();
-            this.preloader.close();
-            this.preloader = null;
-        }
         resizeUtil.removeListener(this.resize);
         scrollUtil.removeListener(this.scroll);
         this.$findOne('.button').removeEventListener('mouseenter', this.onMouseEnter);
