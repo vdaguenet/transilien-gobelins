@@ -48,6 +48,9 @@ module.exports = extend(true, {}, section, {
     ],
     methods: {
         load: function () {
+            /*
+                Load manifest with PreloadJS
+             */
             TweenMax.set(this.$findOne('.main'), {alpha: 0});
             TweenMax.set(this.$findOne('.loader'), {alpha: 1});
             var manifest = this.$options.manifest;
@@ -66,6 +69,9 @@ module.exports = extend(true, {}, section, {
             this.$findOne('#percent').innerText = Math.floor(this.progress*100);
         },
         onLoadComplete: function (e) {
+            /*
+                Hide loader and display home page
+             */
             this.progress = 1;
             this.$findOne('#percent').innerText = Math.floor(this.progress*100);
             TweenMax.to(this.$findOne('.main'), 0.2, {alpha: 1});
@@ -73,6 +79,9 @@ module.exports = extend(true, {}, section, {
             this.playTransitionIn();
         },
         insertTweens: function() {
+            /*
+                Insert twenns in global timeline
+             */
             this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
             this.tlTransition.fromTo(this.$findOne('.cloud.left'), 0.8, {xPercent: '-100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.4);
             this.tlTransition.fromTo(this.$findOne('.cloud.right'), 0.8, {xPercent: '100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.4);
@@ -88,6 +97,9 @@ module.exports = extend(true, {}, section, {
             this.resize();
         },
         onMouseEnter: function () {
+            /*
+                Animation on button mouse hover
+             */
             if(this.tlMouseOut) this.tlMouseOut.kill();
 
             var points = this.$findOne('.button-background polygon').points;
@@ -99,6 +111,9 @@ module.exports = extend(true, {}, section, {
             this.tlMouseEnter.fromTo(points[1], 0.4, {x: 0}, {x: 170, ease: Expo.easeOut}, 0.06);
         },
         onMouseOut: function () {
+            /*
+                Animation on button mouse out
+             */
             if(this.tlMouseEnter) this.tlMouseEnter.kill();
 
             var points = this.$findOne('.button-background polygon').points;
@@ -121,6 +136,9 @@ module.exports = extend(true, {}, section, {
             }
         },
         init: function() {
+            /*
+                Add events
+             */
             resizeUtil.addListener(this.resize);
             scrollUtil.addListener(this.scroll);
         }
@@ -142,6 +160,9 @@ module.exports = extend(true, {}, section, {
     },
 
     beforeDestroy: function() {
+        /*
+            Remove events
+         */
         resizeUtil.removeListener(this.resize);
         scrollUtil.removeListener(this.scroll);
         this.$findOne('.button').removeEventListener('mouseenter', this.onMouseEnter);

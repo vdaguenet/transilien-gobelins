@@ -24,6 +24,10 @@ module.exports = extend(true, {}, section, {
         scrollInit: false,
         freeScroll: false,
         crossedPercent: 0,
+        station: {
+            open: false,
+            url: undefined
+        },
         universes: {
             count: 3,
             current: 0,
@@ -45,6 +49,9 @@ module.exports = extend(true, {}, section, {
     },
     methods: {
         load: function () {
+            /*
+                Obtain data and update progress
+             */
             this.$on('data:received', function () {
                 var nbRequest = 5;
                 this.progress++;
@@ -58,18 +65,27 @@ module.exports = extend(true, {}, section, {
             this.getData();
         },
         insertTweens: function() {
+            /*
+                Insert twenns in global timeline
+             */
             this.tlTransition.set(this.$findOne('.main'), {alpha: 0}, 0);
             this.tlTransition.set(this.$findOne('.loader'), {alpha: 1}, 0);
             this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
         },
         beforeTransitionIn: function() {
+            /*
+                Resize elements and pause svg animations
+             */
             this.railway = this.$findOne('.railway svg');
             this.railway.pauseAnimations();
             this.resize();
         },
         getData: function () {
-            // general informations
+            /*
+                Ask data to API
+             */
             request.get(config.apiUrl + '/general', function(res){
+                // general SNCF informations
                 if(res.status >= 400) {
                     return;
                 }
@@ -84,8 +100,8 @@ module.exports = extend(true, {}, section, {
                 this.$emit('data:received');
             }.bind(this));
 
-            // data about Gare de Lyon
             request.get(config.apiUrl + '/ecs/LYO1', function(res) {
+                // data about Gare de Lyon
                 if (res.status >= 400) {
                     return;
                 }
@@ -105,6 +121,7 @@ module.exports = extend(true, {}, section, {
             }.bind(this));
 
             request.get(config.apiUrl + '/ecs-time/LYO1/0905', function(res) {
+                // data for Gare de Lyon at time 09h05
                 if (res.status >= 400) {
                     return;
                 }
@@ -115,6 +132,7 @@ module.exports = extend(true, {}, section, {
                 this.$emit('data:received');
 
                 request.get(config.apiUrl + '/ecs-time/LYO1/0850', function(res) {
+                    // idem at time 08h50 and compare it with previous data
                     if (res.status >= 400) {
                         return;
                     }
@@ -130,6 +148,9 @@ module.exports = extend(true, {}, section, {
 
         },
         resize: function() {
+            /*
+                Resize and replace elements
+             */
             var backgrounds = this.$find('.background');
             var universes = this.$find('.universe');
             this.transitions.rock = this.$findOne('.transition.crtp-lyo1');
@@ -163,6 +184,9 @@ module.exports = extend(true, {}, section, {
 
         },
         setTextsPositions: function () {
+            /*
+                Place texts
+             */
             this.texts = [];
             var width = this.$findOne('.universes').offsetWidth;
             var height = this.$findOne('.universes').offsetHeight;
@@ -176,6 +200,9 @@ module.exports = extend(true, {}, section, {
             }.bind(this));
         },
         scroll: function () {
+            /*
+                Handle scroll
+             */
             if (false === this.scrollInit) return;
 
             // Prevent scrollX
@@ -185,22 +212,23 @@ module.exports = extend(true, {}, section, {
                 TweenMax.set(window, {scrollTo: {x: 0}});
             }
 
+            // Calc user progress
             this.crossedPercent = 100 - ( scrollUtil.y / this.$findOne('.universes').offsetHeight )*100;
             this.universes.current = Math.floor( this.crossedPercent/(100/this.universes.count) );
 
             if (this.universes.order[ this.universes.current ]) {
+                // In an universe
                 var currentClass = '.' + this.universes.order[ this.universes.current ];
                 var crossedPercentInUniverse = 100*( this.crossedPercent/(100/this.universes.count) - this.universes.current );
 
                 var foregroundEls = this.$find(currentClass + ' .foreground');
                 var middlegroundEls = this.$find(currentClass + ' .middleground');
 
-                var origin, handleOrigin, handleDest, dest;
-                var ratio = 1;
-
+                // paralax
                 TweenMax.to(middlegroundEls, 0.2, {y: -0.9*crossedPercentInUniverse, ease: Cubic.easeOut});
                 TweenMax.to(foregroundEls, 0.2, {y: 1.6*crossedPercentInUniverse, ease: Cubic.easeOut});
 
+                // transitions
                 switch (this.universes.order[ this.universes.current ]) {
                     case 'crtp':
                         // Reverse train
@@ -224,6 +252,9 @@ module.exports = extend(true, {}, section, {
             }
         },
         animateTexts: function () {
+            /*
+                Animations to make texts appear
+             */
             var travellersDay = parseInt(this.$findOne('#value').innerText);
 
             this.tlTexts = new TimelineMax();
@@ -268,43 +299,72 @@ module.exports = extend(true, {}, section, {
             this.tlTexts.set(this.$findOne('#text-0'), {alpha: 1}, 71);
             this.tlTexts.staggerFromTo(this.$find('#text-0 .line'), 0.6, {x: -100, alpha: 0}, {x: 0, alpha: 1, ease: Back.easeOut}, 0.06, 71);
         },
-        onStationClick: function () {
+        onStationClick: function (id) {
+            /*
+                Open station modal
+             */
+            if (!id) {
+                return;
+            }
+
             this.railway.pauseAnimations();
+            this.tlScroll.pause();
             this.tlTexts.pause();
-            // Waiting for design to implement pop ups
+            this.station.open = true;
+            this.station.url = '../assets/images/stations/' + id + '.jpg';
         },
         onCloseStationClick: function () {
+            /*
+                Close station modal
+             */
             this.railway.unpauseAnimations();
+            this.tlScroll.play();
             this.tlTexts.play();
-            // Waiting for design to implement pop ups
+            this.station.open = false;
+            this.station.url = undefined;
         },
         init: function() {
-            resizeUtil.addListener(this.resize);
-            scrollUtil.addListener(this.scroll);
-
+            /*
+                Init events and launch automatic scroll
+             */
             this.scrollInit = true;
 
-            TweenMax.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}});
-            TweenMax.to(this.$findOne('.main'), 0.2, {alpha: 1});
-            TweenMax.to(this.$findOne('.loader'), 0.2, {alpha: 0});
-
-            this.animateTexts();
-
+            this.tlScroll = new TimelineMax({
+                onComplete: function () {
+                    this.freeScroll = true;
+                }.bind(this)
+            });
+            this.tlScroll.set(window, {scrollTo: {y: this.$findOne('.universes').offsetHeight, x: 0}}, 0);
+            this.tlScroll.to(this.$findOne('.main'), 0.2, {alpha: 1}, 0);
+            this.tlScroll.to(this.$findOne('.loader'), 0.2, {alpha: 0}, 0);
+            this.tlScroll.call(this.animateTexts, [], this, 0.2);
             // Back to top
-            TweenMax.to(window, 80, {
+            this.tlScroll.to(window, 80, {
                 scrollTo: {
                     y: 0,
                     x: 0
                 },
                 ease: Linear.easeNone,
-                delay:  1.8,
                 onStart: function () {
                     this.railway.unpauseAnimations();
-                }.bind(this),
-                onComplete: function () {
-                    this.freeScroll = true;
                 }.bind(this)
-            });
+            }, 2);
+
+            //
+            // Events
+            //
+            resizeUtil.addListener(this.resize);
+            scrollUtil.addListener(this.scroll);
+
+            this.$findOne('.close').addEventListener('click', this.onCloseStationClick.bind(this));
+
+            this.$findOne('#stations').addEventListener('click', function (e) {
+                if (e.target == e.currentTarget) {
+                    return;
+                }
+
+                this.onStationClick(e.target.id);
+            }.bind(this));
 
             // My apologizes to the #TeamScrollLibre :(
             this.$el.addEventListener('mousewheel', function (e) {
@@ -321,6 +381,9 @@ module.exports = extend(true, {}, section, {
         }
     },
     ready: function() {
+        /*
+            VueModel is ready
+         */
         this.$once('ready', function() {
             this.init();
         });
@@ -336,8 +399,18 @@ module.exports = extend(true, {}, section, {
         bindAll(this, 'resize', 'scroll', 'init', 'getData');
     },
     beforeDestroy: function() {
+        /*
+            Remove all listeners
+         */
         resizeUtil.removeListener(this.resize);
         scrollUtil.removeListener(this.scroll);
+        this.$findOne('.close').removeEventListener('click', this.onCloseStationClick.bind(this));
+        this.$findOne('#stations').removeEventListener('click', function (e) {
+            if (e.target == e.currentTarget) {
+                return;
+            }
+            this.onStationClick(e.target.id);
+        }.bind(this));
         this.$el.removeEventListener('mousewheel', function (e) {
             if (false === this.freeScroll) {
                 e.preventDefault();

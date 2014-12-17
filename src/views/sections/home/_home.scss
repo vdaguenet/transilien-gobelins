@@ -51,7 +51,6 @@ $button-width: 170px;
             color: $light-blue;
             @include gill-sans-light();
 
-
             @include max-screen(560px) {
                 width: 90%;
                 top: 33%;

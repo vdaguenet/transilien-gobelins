@@ -1,9 +1,17 @@
 <div class="travel">
     <div class="main">
-
         <div class="end">
+            <!-- Conclusion -->
             <div class="content">
                 Nous travaillons chaque jours à <span class="regular">améliorer votre quotidien.</span> Faites part de cette aventure <span class="regular">en évitant</span>, si vous le pouvez, <span class="regular">les heures de pointes.</span>
+            </div>
+        </div>
+        <div class="station-modal" v-class="open: station.open">
+            <!-- Modal for station clickable -->
+            <!-- Currently in protoype state -->
+            <div class="content">
+                <div class="close"></div>
+                <img src="{{station.url}}" alt="">
             </div>
         </div>
         <div class="universes">
@@ -31,7 +39,7 @@
             <!-- Railway line and train -->
             <div class="railway" v-svg='../assets/images/universes/line.svg'></div>
             <!-- Transitions between universes -->
-            <div class="transition crtp-lyo1" v-svg="../assets/images/universes/transition/rock.svg"></div>
+            <img src="../assets/images/universes/transition/rock.png" class="transition crtp-lyo1" alt="">
             <div class="transition lyo1-gnor">
                 <img src="../assets/images/universes/transition/cloud-right.png" class="cloud right">
                 <img src="../assets/images/universes/transition/cloud-left.png" class="cloud left">
