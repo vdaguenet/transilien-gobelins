@@ -25,6 +25,7 @@ module.exports = extend(true, {}, section, {
         freeScroll: false,
         crossedPercent: 0,
         station: {
+            el: undefined,
             open: false,
             url: undefined
         },
@@ -100,7 +101,7 @@ module.exports = extend(true, {}, section, {
                 this.$emit('data:received');
             }.bind(this));
 
-            request.get(config.apiUrl + '/ecs/LYO1', function(res) {
+            request.get(config.apiUrl + '/ecs/LYO1/20140301', function(res) {
                 // data about Gare de Lyon
                 if (res.status >= 400) {
                     return;
@@ -110,7 +111,7 @@ module.exports = extend(true, {}, section, {
                 travelTexts[8].second.content = 'c\'est <span id="value">' + travellersDay + '</span>';
                 this.$emit('data:received');
 
-                request.get(config.apiUrl + '/ecs-rushhour/LYO1', function(res) {
+                request.get(config.apiUrl + '/ecs-rushhour/LYO1/20140301', function(res) {
                     if (res.status >= 400) {
                         return;
                     }
@@ -158,6 +159,7 @@ module.exports = extend(true, {}, section, {
             this.transitions.cloudRight = this.$findOne('.transition.lyo1-gnor .cloud.right');
             this.transitions.cloudEndLeft = this.$findOne('.transition.gnor-end .cloud.left');
             this.transitions.cloudEndRight = this.$findOne('.transition.gnor-end .cloud.right');
+            this.station.el = this.$findOne('.station-modal');
 
             // Set last screen
             TweenMax.set(this.$findOne('.end'), {height: resizeUtil.height});
@@ -310,18 +312,47 @@ module.exports = extend(true, {}, section, {
             this.railway.pauseAnimations();
             this.tlScroll.pause();
             this.tlTexts.pause();
-            this.station.open = true;
-            this.station.url = '../assets/images/stations/' + id + '.jpg';
+            if(this.tlStation) {
+                this.tlStation.kill();
+            }
+            this.tlStation = new TimelineMax({
+                onStart: function () {
+                    this.station.open = true;
+                    this.station.url = '../assets/images/stations/' + id + '.jpg';
+                }.bind(this),
+                onReverseComplete: function () {
+                    this.station.open = false;
+                    this.station.url = undefined;
+                    this.railway.unpauseAnimations();
+                    this.tlScroll.play();
+                    this.tlTexts.play();
+                }.bind(this)
+            });
+            this.tlStation.fromTo(this.station.el, 0.7,
+                {width: '0%', height: 4},
+                {width: '100%', height: 4, ease: Expo.easeInOut},
+            0);
+            this.tlStation.fromTo(this.station.el, 0.4,
+                {height: 4},
+                {height: '100%', ease: Expo.easeInOut},
+            0.7);
+            this.tlStation.fromTo(this.$findOne('.station-modal .content'), 0.4,
+                {alpha: 0},
+                {alpha: 1, ease: Expo.easeInOut},
+            0.8);
+            this.tlStation.fromTo(this.$findOne('.station-modal .close'), 0.3,
+                {alpha: 0},
+                {alpha: 1, ease: Expo.easeInOut},
+            1.1);
         },
         onCloseStationClick: function () {
             /*
                 Close station modal
              */
-            this.railway.unpauseAnimations();
-            this.tlScroll.play();
-            this.tlTexts.play();
-            this.station.open = false;
-            this.station.url = undefined;
+            if(this.tlStation) {
+                this.tlStation.kill();
+            }
+            this.tlStation.reverse();
         },
         init: function() {
             /*

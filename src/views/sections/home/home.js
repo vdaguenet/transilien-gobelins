@@ -42,9 +42,12 @@ module.exports = extend(true, {}, section, {
         '../assets/images/universes/crtp/middleground.png',
         '../assets/images/universes/crtp/foreground.png',
         '../assets/images/universes/line.svg',
-        '../assets/images/universes/transition/rock.svg',
+        '../assets/images/universes/transition/rock.png',
         '../assets/images/universes/transition/cloud-right.png',
-        '../assets/images/universes/transition/cloud-left.png'
+        '../assets/images/universes/transition/cloud-left.png',
+        // stations assets
+        '../assets/images/stations/station-01.jpg',
+        '../assets/images/stations/station-02.jpg'
     ],
     methods: {
         load: function () {

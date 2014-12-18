@@ -515,7 +515,48 @@
 </g>
 <g id="stations">
     <circle fill="#E0DED8" cx="704.8" cy="2637.8" r="20.8"/>
-    <circle fill="#E0DED8" cx="750.8" cy="1957.8" r="20.8"/>
+
+    <g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">
+        <circle class="clickable-station" id="station-02" fill="#E0DED8" cx="750.8" cy="1957.8" r="20.8"/>
+        <circle stroke="#E0DED8" cx="750.8" cy="1957.8" r="20.8" stroke-opacity="0">
+            <animate attributeName="r"
+                 begin="1.5s" dur="3s"
+                 values="26;42.8"
+                 calcMode="linear"
+                 repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+                 begin="1.5s" dur="3s"
+                 values="1;0" calcMode="linear"
+                 repeatCount="indefinite" />
+            <animate attributeName="stroke-width"
+                 begin="1.5s" dur="3s"
+                 values="2;0" calcMode="linear"
+                 repeatCount="indefinite" />
+        </circle>
+        <circle stroke="#E0DED8" cx="750.8" cy="1957.8" r="20.8" stroke-opacity="0">
+            <animate attributeName="r"
+                 begin="3s" dur="3s"
+                 values="26.8;42.8"
+                 calcMode="linear"
+                 repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+                 begin="3s" dur="3s"
+                 values="1;0" calcMode="linear"
+                 repeatCount="indefinite" />
+            <animate attributeName="stroke-width"
+                 begin="3s" dur="3s"
+                 values="2;0" calcMode="linear"
+                 repeatCount="indefinite" />
+        </circle>
+        <circle stroke="#E0DED8" cx="750.8" cy="1957.8" r="18.8">
+            <animate attributeName="r"
+                 begin="0s" dur="1.5s"
+                 values="26.8;21.8;22.8;23.8;24.8;25.8;26.8"
+                 calcMode="linear"
+                 repeatCount="indefinite" />
+        </circle>
+    </g>
+
     <circle fill="#E0DED8" cx="289.8" cy="821.8" r="20.8"/>
     <circle fill="#E0DED8" cx="154.8" cy="223.8" r="20.8"/>
 
