@@ -83,7 +83,7 @@ module.exports = extend(true, {}, section, {
         },
         insertTweens: function() {
             /*
-                Insert twenns in global timeline
+                Insert tweens in global timeline
              */
             this.tlTransition.fromTo(this.$el, 0.3, {alpha: 0}, {alpha: 1, ease: Expo.easeOut}, 0);
             this.tlTransition.fromTo(this.$findOne('.cloud.left'), 0.8, {xPercent: '-100%'}, {xPercent: 0, ease: Expo.easeOut}, 0.4);

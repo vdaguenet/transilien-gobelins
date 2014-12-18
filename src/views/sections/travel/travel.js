@@ -67,7 +67,7 @@ module.exports = extend(true, {}, section, {
         },
         insertTweens: function() {
             /*
-                Insert twenns in global timeline
+                Insert tweens in global timeline
              */
             this.tlTransition.set(this.$findOne('.main'), {alpha: 0}, 0);
             this.tlTransition.set(this.$findOne('.loader'), {alpha: 1}, 0);
