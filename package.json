@@ -1,24 +1,21 @@
 {
-  "name": "patchwork-boilerplate",
-  "version": "0.1.3",
-  "description": "A gulp + sass + vuejs boilerplate.",
+  "name": "sncf-transilien-dataviz",
+  "version": "0.0.1",
+  "description": "Datavisualization about SNCF Transilien commuters made at Gobelins school",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/ayamflow/patchwork"
+    "url": "http://github.com/vdaguenet/transilien-gobelins"
   },
   "keywords": [
-    "boilerplate",
+    "datavisualization",
+    "dataviz",
     "vue.js",
-    "gulp",
-    "sass",
-    "scss",
-    "starter"
   ],
-  "author": "= <=>",
+  "author": "vdaguenet <valentin.daguenet@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ayamflow/patchwork/issues"
+    "url": "https://github.com/vdaguenet/transilien-gobelins/issues"
   },
   "browserify": {
     "transform": [
